@@ -3,897 +3,980 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>부서 일정 공유 캘린더</title>
-  <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.19/index.global.min.css" rel="stylesheet" />
+  <title>부서 연간일정표</title>
   <style>
     :root {
-      --bg: #f6f8fb;
+      --bg: #f4f7fb;
       --card: #ffffff;
-      --line: #dbe3ee;
+      --line: #dde5ef;
       --text: #1f2937;
       --muted: #6b7280;
       --primary: #2563eb;
-      --danger: #dc2626;
-      --success: #059669;
+      --primary-soft: #eaf2ff;
+      --event: #4dabf7;
+      --deadline: #ff6b6b;
+      --meeting: #51cf66;
+      --notice: #9775fa;
+      --done: #868e96;
+      --shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
     }
 
     * { box-sizing: border-box; }
+
     body {
       margin: 0;
-      font-family: "Segoe UI", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
-      background: var(--bg);
+      font-family: "Malgun Gothic", "Apple SD Gothic Neo", sans-serif;
+      background: linear-gradient(180deg, #f7f9fc 0%, #f2f5fa 100%);
       color: var(--text);
     }
 
-    .hidden { display: none !important; }
-
-    .page {
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 24px;
+    .wrap {
+      max-width: 1520px;
+      margin: 0 auto;
+      padding: 24px 20px 40px;
     }
 
-    .card {
-      width: 100%;
-      max-width: 420px;
+    .hero,
+    .panel,
+    .month-card {
       background: var(--card);
       border: 1px solid var(--line);
-      border-radius: 20px;
-      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
-      padding: 28px;
+      border-radius: 18px;
+      box-shadow: var(--shadow);
     }
 
-    h1, h2, h3 { margin: 0 0 12px; }
-    .sub { color: var(--muted); margin-bottom: 20px; line-height: 1.5; }
+    .hero {
+      padding: 22px 24px;
+      margin-bottom: 18px;
+      display: grid;
+      grid-template-columns: 1.6fr 1fr;
+      gap: 18px;
+      align-items: center;
+    }
 
-    .field { margin-bottom: 14px; }
-    .field label {
-      display: block;
+    .hero h1 {
+      margin: 0;
+      font-size: 30px;
+      line-height: 1.2;
+    }
+
+    .desc {
+      margin-top: 8px;
+      color: var(--muted);
       font-size: 14px;
-      font-weight: 600;
+      line-height: 1.6;
+    }
+
+    .hero-right {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+
+    .stat-card {
+      background: #f8fbff;
+      border: 1px solid #e5edf8;
+      border-radius: 14px;
+      padding: 14px;
+    }
+
+    .stat-label {
+      font-size: 12px;
+      color: var(--muted);
       margin-bottom: 6px;
     }
 
-    .field input,
-    .field select,
-    .field textarea {
-      width: 100%;
-      padding: 12px 14px;
-      border: 1px solid var(--line);
-      border-radius: 12px;
-      font-size: 14px;
-      background: #fff;
-    }
-
-    .field textarea {
-      min-height: 88px;
-      resize: vertical;
-    }
-
-    .row { display: flex; gap: 10px; }
-    .row > * { flex: 1; }
-
-    .btn {
-      border: 0;
-      border-radius: 12px;
-      padding: 12px 14px;
-      font-size: 14px;
-      font-weight: 700;
-      cursor: pointer;
-    }
-
-    .btn-primary { background: var(--primary); color: white; }
-    .btn-secondary { background: #eef2ff; color: #3730a3; }
-    .btn-danger { background: #fee2e2; color: var(--danger); }
-    .btn-ghost { background: #f3f4f6; color: #111827; }
-
-    .actions { display: flex; gap: 10px; margin-top: 18px; }
-    .actions .btn { flex: 1; }
-
-    .notice {
-      margin-top: 14px;
-      padding: 12px 14px;
-      border-radius: 12px;
-      font-size: 13px;
-      line-height: 1.5;
-      background: #eff6ff;
-      color: #1d4ed8;
-    }
-
-    .error {
-      margin-top: 14px;
-      padding: 12px 14px;
-      border-radius: 12px;
-      font-size: 13px;
-      line-height: 1.5;
-      background: #fef2f2;
-      color: #b91c1c;
-    }
-
-    #appShell {
-      min-height: 100vh;
-      padding: 20px;
-    }
-
-    .topbar {
-      background: white;
-      border: 1px solid var(--line);
-      border-radius: 20px;
-      padding: 16px 18px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 16px;
-      margin-bottom: 16px;
-      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.05);
-    }
-
-    .topbar-left h2 { margin-bottom: 4px; }
-    .topbar-left p { margin: 0; color: var(--muted); font-size: 14px; }
-
-    .topbar-right {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-
-    .badge {
-      padding: 8px 10px;
-      border-radius: 999px;
-      background: #eef2ff;
-      color: #3730a3;
-      font-size: 12px;
-      font-weight: 700;
-    }
-
-    .layout {
-      display: grid;
-      grid-template-columns: 320px 1fr;
-      gap: 16px;
-    }
-
-    .panel {
-      background: white;
-      border: 1px solid var(--line);
-      border-radius: 20px;
-      padding: 18px;
-      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.05);
-    }
-
-    .panel h3 { margin-bottom: 10px; }
-    .mini { color: var(--muted); font-size: 13px; line-height: 1.5; margin-bottom: 16px; }
-
-    #calendarWrap {
-      background: white;
-      border: 1px solid var(--line);
-      border-radius: 20px;
-      padding: 18px;
-      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.05);
-    }
-
-    .fc .fc-toolbar-title {
-      font-size: 1.2rem;
+    .stat-value {
+      font-size: 24px;
       font-weight: 800;
     }
 
-    .list {
+    .legend {
       display: flex;
-      flex-direction: column;
       gap: 10px;
-      max-height: 360px;
-      overflow: auto;
-      padding-right: 4px;
+      flex-wrap: wrap;
+      margin-top: 16px;
     }
 
-    .event-item {
-      border: 1px solid var(--line);
-      border-left: 6px solid var(--primary);
-      border-radius: 14px;
-      padding: 12px;
+    .legend span {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      background: #f3f6fa;
+      padding: 7px 11px;
+      border-radius: 999px;
+      color: #344054;
+    }
+
+    .dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    .event { background: var(--event); }
+    .deadline { background: var(--deadline); }
+    .meeting { background: var(--meeting); }
+    .notice { background: var(--notice); }
+    .done-dot { background: var(--done); }
+
+    .dashboard {
+      display: grid;
+      grid-template-columns: 340px 1fr;
+      gap: 18px;
+      align-items: start;
+      margin-bottom: 18px;
+    }
+
+    .panel {
+      padding: 18px;
+    }
+
+    .panel-title-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 8px;
+      flex-wrap: wrap;
+    }
+
+    .panel-title {
+      font-size: 17px;
+      font-weight: 800;
+    }
+
+    .mode-badge,
+    .filter-chip {
+      font-size: 12px;
+      background: #eef4ff;
+      color: #334155;
+      padding: 7px 10px;
+      border-radius: 999px;
+      font-weight: 700;
+    }
+
+    .panel-desc {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.55;
+      margin-bottom: 14px;
+    }
+
+    .field-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+
+    .field-grid input,
+    .field-grid select,
+    .field-grid button {
+      width: 100%;
+      padding: 11px 12px;
+      border: 1px solid #d6e0ea;
+      border-radius: 10px;
+      font-size: 14px;
       background: #fff;
     }
 
-    .event-item h4 {
-      margin: 0 0 6px;
-      font-size: 14px;
+    .field-grid input:focus,
+    .field-grid select:focus {
+      outline: none;
+      border-color: #93c5fd;
+      box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.08);
     }
 
-    .event-item p {
-      margin: 2px 0;
+    .field-two {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .btn-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 6px;
+    }
+
+    button {
+      cursor: pointer;
+      border: none;
+      font-weight: 700;
+      transition: transform 0.12s ease, opacity 0.2s ease;
+    }
+
+    button:hover { opacity: 0.94; }
+    button:active { transform: translateY(1px); }
+
+    #saveBtn {
+      background: var(--primary);
+      color: white;
+    }
+
+    #cancelEditBtn {
+      background: #6b7280;
+      color: white;
+      display: none;
+    }
+
+    .secondary-btn {
+      background: #edf2f7;
+      color: #334155;
+    }
+
+    .current-filter {
+      margin-top: 12px;
+      font-size: 13px;
+      color: #495057;
+      background: #f3f5f7;
+      display: inline-block;
+      padding: 7px 11px;
+      border-radius: 999px;
+    }
+
+    .quick-list {
+      display: grid;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .quick-item {
+      border: 1px solid #e6edf5;
+      background: #fafcff;
+      border-radius: 12px;
+      padding: 12px;
+    }
+
+    .quick-item .q-date {
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+
+    .quick-item .q-title {
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .quick-item .q-meta {
+      font-size: 12px;
+      color: #475467;
+    }
+
+    .month-topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+    }
+
+    .month-topbar h2 {
+      margin: 0;
+      font-size: 20px;
+    }
+
+    .month-topbar p {
+      margin: 4px 0 0;
       color: var(--muted);
       font-size: 13px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .month-card {
+      padding: 14px;
+      min-height: 250px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .month-card::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 90px;
+      height: 90px;
+      background: radial-gradient(circle at top right, rgba(37,99,235,0.07), transparent 68%);
+      pointer-events: none;
+    }
+
+    .month-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+      border-bottom: 2px solid #edf2f7;
+      padding-bottom: 8px;
+    }
+
+    .month-title {
+      font-size: 20px;
+      font-weight: 800;
+    }
+
+    .month-summary {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 3px;
+    }
+
+    .month-add-btn {
+      background: var(--primary-soft);
+      color: var(--primary);
+      border-radius: 10px;
+      padding: 8px 11px;
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .item {
+      border-left: 6px solid #ddd;
+      background: #f8fafc;
+      border: 1px solid #edf2f7;
+      border-left-width: 6px;
+      border-radius: 12px;
+      padding: 12px 12px 12px 14px;
+      margin-bottom: 10px;
+      position: relative;
+      transition: transform 0.15s ease, box-shadow 0.18s ease;
+    }
+
+    .item:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 8px 20px rgba(15, 23, 42, 0.06);
+    }
+
+    .item.event { border-left-color: var(--event); }
+    .item.deadline { border-left-color: var(--deadline); }
+    .item.meeting { border-left-color: var(--meeting); }
+    .item.notice { border-left-color: var(--notice); }
+
+    .item.done {
+      border-left-color: var(--done) !important;
+      background: #eef2f5;
+      color: #68707a;
+    }
+
+    .item.done .title {
+      text-decoration: line-through;
+      color: #727b86;
+    }
+
+    .item.done .meta,
+    .item.done .date,
+    .item.done .category-badge {
+      color: #7b8490;
+    }
+
+    .date {
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 5px;
+      font-weight: 700;
+    }
+
+    .title {
+      font-size: 15px;
+      font-weight: 800;
+      margin-bottom: 6px;
+      padding-right: 205px;
+      line-height: 1.4;
+    }
+
+    .meta {
+      font-size: 13px;
+      color: #475467;
+      margin-top: 3px;
       line-height: 1.45;
     }
 
-    .event-item button {
+    .badge-row {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
       margin-top: 8px;
-      width: 100%;
     }
 
-    .modal {
-      position: fixed;
-      inset: 0;
-      background: rgba(15, 23, 42, 0.45);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-      z-index: 1000;
-    }
-
-    .modal-card {
-      width: 100%;
-      max-width: 620px;
-      background: white;
-      border-radius: 22px;
-      padding: 22px;
-      border: 1px solid var(--line);
-      max-height: 92vh;
-      overflow: auto;
-    }
-
-    .switch {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      margin-top: 6px;
-      font-size: 14px;
-      color: var(--text);
-    }
-
-    .footer-note {
-      margin-top: 14px;
-      color: var(--muted);
+    .category-badge,
+    .status-text {
+      display: inline-block;
       font-size: 12px;
-      line-height: 1.5;
+      font-weight: 800;
+      border-radius: 999px;
+      padding: 5px 8px;
     }
 
-    @media (max-width: 980px) {
-      .layout { grid-template-columns: 1fr; }
+    .category-badge {
+      color: #3154b2;
+      background: #eaf0ff;
+    }
+
+    .status-text {
+      color: #495057;
+      background: #e9ecef;
+    }
+
+    .empty {
+      color: #98a2b3;
+      font-size: 14px;
+      padding: 14px 4px;
+    }
+
+    .btn-group {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      max-width: 210px;
+    }
+
+    .edit-btn, .delete-btn, .done-btn {
+      color: white;
+      border-radius: 8px;
+      padding: 6px 9px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .edit-btn { background: #f08c00; }
+    .delete-btn { background: #e03131; }
+    .done-btn { background: #2b8a3e; }
+    .done-btn.cancel-done { background: #495057; }
+
+    .helper {
+      margin-top: 10px;
+      padding: 11px 12px;
+      border-radius: 12px;
+      background: #f8fbff;
+      border: 1px solid #e0ebff;
+      color: #3b4b63;
+      font-size: 12px;
+      line-height: 1.55;
+    }
+
+    @media (max-width: 1380px) {
+      .hero { grid-template-columns: 1fr; }
+      .dashboard { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 1120px) {
+      .grid { grid-template-columns: repeat(2, 1fr); }
+      .hero-right { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    @media (max-width: 760px) {
+      .wrap { padding: 14px 12px 24px; }
+      .grid { grid-template-columns: 1fr; }
+      .hero-right,
+      .field-two,
+      .btn-row { grid-template-columns: 1fr; }
+      .month-header { align-items: stretch; flex-direction: column; }
+      .btn-group {
+        position: static;
+        margin-bottom: 8px;
+        max-width: 100%;
+      }
+      .title { padding-right: 0; }
     }
   </style>
 </head>
 <body>
-  <section id="authPage" class="page">
-    <div class="card">
-      <h1>부서 일정 공유 캘린더</h1>
-      <p class="sub">로그인 후 부서 일정을 조회하고, 권한이 있으면 일정을 등록·수정할 수 있습니다.</p>
-
-      <div class="row">
-        <button id="showLoginBtn" class="btn btn-primary">로그인</button>
-        <button id="showSignupBtn" class="btn btn-secondary">회원가입</button>
+  <div class="wrap">
+    <section class="hero">
+      <div>
+        <h1>2026년 부서 연간일정표</h1>
+        <div class="desc">월별 카드 형태로 한눈에 보고, 일정 추가 / 수정 / 삭제 / 완료 처리 / 사업별 필터까지 가능한 버전입니다. 데이터는 현재 브라우저에 저장됩니다.</div>
+        <div class="legend">
+          <span><i class="dot event"></i> 행사</span>
+          <span><i class="dot deadline"></i> 마감</span>
+          <span><i class="dot meeting"></i> 회의</span>
+          <span><i class="dot notice"></i> 공지</span>
+          <span><i class="dot done-dot"></i> 완료</span>
+        </div>
       </div>
-
-      <form id="authForm" style="margin-top:18px;">
-        <div class="field">
-          <label for="nameInput">이름 (회원가입 시 입력)</label>
-          <input id="nameInput" type="text" placeholder="홍길동" />
+      <div class="hero-right">
+        <div class="stat-card">
+          <div class="stat-label">전체 일정</div>
+          <div class="stat-value" id="statTotal">0</div>
         </div>
-        <div class="field">
-          <label for="deptInput">부서 (회원가입 시 입력)</label>
-          <input id="deptInput" type="text" placeholder="산업지원부" />
+        <div class="stat-card">
+          <div class="stat-label">완료 일정</div>
+          <div class="stat-value" id="statDone">0</div>
         </div>
-        <div class="field">
-          <label for="emailInput">이메일</label>
-          <input id="emailInput" type="email" placeholder="name@company.com" required />
+        <div class="stat-card">
+          <div class="stat-label">진행 예정</div>
+          <div class="stat-value" id="statPending">0</div>
         </div>
-        <div class="field">
-          <label for="passwordInput">비밀번호</label>
-          <input id="passwordInput" type="password" placeholder="비밀번호 입력" required />
-        </div>
-        <div class="actions">
-          <button id="submitAuthBtn" type="submit" class="btn btn-primary">로그인 실행</button>
-        </div>
-      </form>
-
-      <div class="notice">
-        배포 전 Firebase 콘솔에서 Authentication의 <b>이메일/비밀번호 로그인</b>을 활성화하세요.
       </div>
-      <div id="authMessage"></div>
-    </div>
-  </section>
+    </section>
 
-  <section id="appShell" class="hidden">
-    <div class="topbar">
-      <div class="topbar-left">
-        <h2>부서 일정 공유 캘린더</h2>
-        <p id="welcomeText">사용자 정보를 불러오는 중...</p>
-      </div>
-      <div class="topbar-right">
-        <span id="roleBadge" class="badge">권한 확인 중</span>
-        <button id="openCreateBtn" class="btn btn-primary">일정 등록</button>
-        <button id="logoutBtn" class="btn btn-ghost">로그아웃</button>
-      </div>
-    </div>
-
-    <div class="layout">
+    <section class="dashboard">
       <aside class="panel">
-        <h3>빠른 등록 / 안내</h3>
-        <p class="mini">관리자는 일정을 등록·수정·삭제할 수 있고, 일반 사용자는 조회만 가능하도록 기본값을 넣었습니다.</p>
+        <div class="panel-title-row">
+          <div class="panel-title">일정 관리</div>
+          <span id="modeBadge" class="mode-badge">새 일정 추가</span>
+        </div>
+        <div class="panel-desc">입력 후 저장하면 월별 카드에 바로 반영됩니다. 수정 중일 때는 버튼 문구와 모드 표시가 변경됩니다.</div>
 
-        <div class="field">
-          <label for="filterDept">부서 필터</label>
-          <select id="filterDept">
-            <option value="all">전체 부서</option>
-          </select>
+        <div class="field-grid">
+          <input type="text" id="project" placeholder="사업명 / 큰 카테고리" />
+
+          <div class="field-two">
+            <select id="month">
+              <option value="">월 선택</option>
+            </select>
+            <input type="text" id="date" placeholder="예: 3.15" />
+          </div>
+
+          <input type="text" id="title" placeholder="일정명" />
+
+          <div class="field-two">
+            <select id="type">
+              <option value="event">행사</option>
+              <option value="deadline">마감</option>
+              <option value="meeting">회의</option>
+              <option value="notice">공지</option>
+            </select>
+            <input type="text" id="manager" placeholder="담당자 / 부서" />
+          </div>
+
+          <input type="text" id="note" placeholder="비고 / 준비사항 / 참고내용" />
+
+          <div class="btn-row">
+            <button id="saveBtn" onclick="saveSchedule()">일정 추가</button>
+            <button id="cancelEditBtn" onclick="cancelEdit()">수정 취소</button>
+          </div>
+
+          <button class="secondary-btn" onclick="clearAllSchedules()">전체 일정 초기화</button>
         </div>
 
-        <div class="field">
-          <label for="filterOwner">등록자 이메일 필터</label>
-          <input id="filterOwner" type="text" placeholder="예: name@company.com" />
-        </div>
-
-        <div class="actions">
-          <button id="applyFilterBtn" class="btn btn-secondary">필터 적용</button>
-          <button id="resetFilterBtn" class="btn btn-ghost">필터 초기화</button>
-        </div>
-
-        <hr style="border:none;border-top:1px solid var(--line);margin:18px 0;">
-
-        <h3>다가오는 일정</h3>
-        <div id="upcomingList" class="list"></div>
-
-        <p class="footer-note">
-          팁: 캘린더 날짜를 클릭하면 해당 날짜로 신규 일정 등록창이 열립니다. 기존 일정을 클릭하면 상세 수정창이 열립니다.
-        </p>
+        <div class="helper">팁: 각 월 카드의 <b>+ 일정추가</b>를 누르면 해당 월이 자동으로 입력됩니다.</div>
       </aside>
 
-      <main id="calendarWrap">
-        <div id="calendar"></div>
-      </main>
-    </div>
-  </section>
-
-  <div id="eventModal" class="modal hidden">
-    <div class="modal-card">
-      <h3 id="modalTitle">일정 등록</h3>
-      <p class="mini">반복일정은 기본 예시로 포함했습니다. 필요 시 월간/연간 반복으로 확장하면 됩니다.</p>
-
-      <form id="eventForm">
-        <input id="eventId" type="hidden" />
-
-        <div class="field">
-          <label for="eventTitle">일정명</label>
-          <input id="eventTitle" type="text" placeholder="예: 사업 공고 게시" required />
-        </div>
-
-        <div class="row">
-          <div class="field">
-            <label for="eventStart">시작일시</label>
-            <input id="eventStart" type="datetime-local" required />
+      <section>
+        <div class="panel" style="margin-bottom: 18px;">
+          <div class="panel-title-row">
+            <div class="panel-title">사업별 보기</div>
+            <span class="filter-chip">필터 적용형 보기</span>
           </div>
-          <div class="field">
-            <label for="eventEnd">종료일시</label>
-            <input id="eventEnd" type="datetime-local" required />
-          </div>
-        </div>
+          <div class="panel-desc">특정 사업만 골라서 월별 일정을 볼 수 있습니다.</div>
 
-        <label class="switch">
-          <input id="allDay" type="checkbox" />
-          종일 일정
-        </label>
-
-        <div class="row" style="margin-top:12px;">
-          <div class="field">
-            <label for="eventDept">부서</label>
-            <input id="eventDept" type="text" placeholder="산업지원부" required />
-          </div>
-          <div class="field">
-            <label for="eventColor">색상</label>
-            <input id="eventColor" type="color" value="#2563eb" />
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="field">
-            <label for="eventRepeat">반복</label>
-            <select id="eventRepeat">
-              <option value="none">반복 없음</option>
-              <option value="daily">매일</option>
-              <option value="weekly">매주</option>
-              <option value="monthly">매월</option>
+          <div class="field-two">
+            <select id="projectFilter" onchange="handleFilterChange()">
+              <option value="__ALL__">전체 보기</option>
             </select>
+            <input type="text" id="keywordFilter" placeholder="일정명 / 담당 / 비고 검색" oninput="handleFilterChange()" />
           </div>
-          <div class="field">
-            <label for="eventLocation">장소</label>
-            <input id="eventLocation" type="text" placeholder="회의실 / 온라인" />
+          <div id="currentFilterText" class="current-filter">현재 필터: 전체 보기</div>
+        </div>
+
+        <div class="panel" style="margin-bottom: 18px;">
+          <div class="month-topbar">
+            <div>
+              <h2>월별 일정 현황</h2>
+              <p>카드형 레이아웃으로 1월부터 12월까지 한 번에 확인할 수 있습니다.</p>
+            </div>
           </div>
+          <div id="scheduleGrid" class="grid"></div>
         </div>
+      </section>
+    </section>
 
-        <div class="field">
-          <label for="eventMemo">비고</label>
-          <textarea id="eventMemo" placeholder="세부 내용, 준비사항, 관련 링크 등을 적어주세요."></textarea>
-        </div>
-
-        <div id="eventMessage"></div>
-
-        <div class="actions">
-          <button type="submit" class="btn btn-primary">저장</button>
-          <button id="closeModalBtn" type="button" class="btn btn-ghost">닫기</button>
-          <button id="deleteEventBtn" type="button" class="btn btn-danger hidden">삭제</button>
-        </div>
-      </form>
-    </div>
+    <section class="panel">
+      <div class="panel-title-row">
+        <div class="panel-title">다가오는 일정</div>
+        <span class="filter-chip">상위 6건</span>
+      </div>
+      <div class="panel-desc">필터가 적용된 상태를 기준으로 가까운 일정부터 보여줍니다.</div>
+      <div id="quickList" class="quick-list"></div>
+    </section>
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.19/index.global.min.js"></script>
+  <script>
+    const STORAGE_KEY = "dept_schedule_data_2026_v2";
+    const FILTER_ALL = "__ALL__";
+    let editingId = null;
 
-  <script type="module">
-    import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js';
-    import {
-      getAuth,
-      onAuthStateChanged,
-      signInWithEmailAndPassword,
-      createUserWithEmailAndPassword,
-      signOut
-    } from 'https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js';
-    import {
-      getFirestore,
-      doc,
-      setDoc,
-      getDoc,
-      addDoc,
-      updateDoc,
-      deleteDoc,
-      collection,
-      onSnapshot,
-      orderBy,
-      query,
-      serverTimestamp
-    } from 'https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js';
+    const defaultData = [
+      { id: 1, project: "지원사업A", month: 1, date: "1.10", title: "사업계획 보고", type: "meeting", manager: "기획팀", note: "연간 운영방안 확정", done: false },
+      { id: 2, project: "지원사업A", month: 2, date: "2.28", title: "1차 접수 마감", type: "deadline", manager: "산업지원부", note: "18:00 마감", done: false },
+      { id: 3, project: "지원사업B", month: 3, date: "3.08", title: "심사위원회 개최", type: "meeting", manager: "운영팀", note: "평가자료 사전 배포", done: false },
+      { id: 4, project: "지원사업B", month: 4, date: "4.12", title: "선정 결과 통보", type: "notice", manager: "산업지원부", note: "공문 및 유선 안내", done: false },
+      { id: 5, project: "행사사업", month: 5, date: "5.20", title: "중간 점검자료 제출", type: "deadline", manager: "참여기관", note: "양식 준수", done: true }
+    ];
 
-    // 1) 아래 값을 Firebase 프로젝트 설정값으로 교체하세요.
-    const firebaseConfig = {
-      apiKey: 'AIzaSyD3O6AeyFCbdP4Da6s0BfBf6VH_iFN6E-A',
-      authDomain: 'department-calendar-87fcc.firebaseapp.com',
-      projectId: 'department-calendar-87fcc',
-      storageBucket: 'department-calendar-87fcc.firebasestorage.app',
-      messagingSenderId: '718163741316',
-      appId: '1:718163741316:web:ae9fd3ea39a8ebd69790d1'
-    };
+    let scheduleData = [];
 
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getFirestore(app);
-
-    const authPage = document.getElementById('authPage');
-    const appShell = document.getElementById('appShell');
-    const authForm = document.getElementById('authForm');
-    const submitAuthBtn = document.getElementById('submitAuthBtn');
-    const showLoginBtn = document.getElementById('showLoginBtn');
-    const showSignupBtn = document.getElementById('showSignupBtn');
-    const authMessage = document.getElementById('authMessage');
-
-    const nameInput = document.getElementById('nameInput');
-    const deptInput = document.getElementById('deptInput');
-    const emailInput = document.getElementById('emailInput');
-    const passwordInput = document.getElementById('passwordInput');
-
-    const welcomeText = document.getElementById('welcomeText');
-    const roleBadge = document.getElementById('roleBadge');
-    const logoutBtn = document.getElementById('logoutBtn');
-    const openCreateBtn = document.getElementById('openCreateBtn');
-    const upcomingList = document.getElementById('upcomingList');
-    const filterDept = document.getElementById('filterDept');
-    const filterOwner = document.getElementById('filterOwner');
-    const applyFilterBtn = document.getElementById('applyFilterBtn');
-    const resetFilterBtn = document.getElementById('resetFilterBtn');
-
-    const eventModal = document.getElementById('eventModal');
-    const eventForm = document.getElementById('eventForm');
-    const modalTitle = document.getElementById('modalTitle');
-    const eventMessage = document.getElementById('eventMessage');
-    const deleteEventBtn = document.getElementById('deleteEventBtn');
-    const closeModalBtn = document.getElementById('closeModalBtn');
-
-    const eventId = document.getElementById('eventId');
-    const eventTitle = document.getElementById('eventTitle');
-    const eventStart = document.getElementById('eventStart');
-    const eventEnd = document.getElementById('eventEnd');
-    const allDay = document.getElementById('allDay');
-    const eventDept = document.getElementById('eventDept');
-    const eventColor = document.getElementById('eventColor');
-    const eventRepeat = document.getElementById('eventRepeat');
-    const eventLocation = document.getElementById('eventLocation');
-    const eventMemo = document.getElementById('eventMemo');
-
-    let authMode = 'login';
-    let calendar;
-    let currentUser = null;
-    let currentProfile = null;
-    let allEvents = [];
-    let unsubEvents = null;
-    let deptOptions = new Set();
-
-    function setAuthMode(mode) {
-      authMode = mode;
-      submitAuthBtn.textContent = mode === 'login' ? '로그인 실행' : '회원가입 실행';
-      showLoginBtn.className = mode === 'login' ? 'btn btn-primary' : 'btn btn-secondary';
-      showSignupBtn.className = mode === 'signup' ? 'btn btn-primary' : 'btn btn-secondary';
-      authMessage.innerHTML = '';
-    }
-
-    function showMessage(target, message, type = 'notice') {
-      target.innerHTML = `<div class="${type}">${message}</div>`;
-    }
-
-    showLoginBtn.addEventListener('click', () => setAuthMode('login'));
-    showSignupBtn.addEventListener('click', () => setAuthMode('signup'));
-
-    authForm.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      authMessage.innerHTML = '';
-
-      const email = emailInput.value.trim();
-      const password = passwordInput.value.trim();
-      const name = nameInput.value.trim();
-      const dept = deptInput.value.trim();
-
-      try {
-        if (authMode === 'login') {
-          await signInWithEmailAndPassword(auth, email, password);
-        } else {
-          const cred = await createUserWithEmailAndPassword(auth, email, password);
-          await setDoc(doc(db, 'users', cred.user.uid), {
-            uid: cred.user.uid,
-            name: name || '이름 미입력',
-            dept: dept || '미지정',
-            email,
-            role: 'member',
-            createdAt: serverTimestamp()
-          });
-        }
-      } catch (err) {
-        showMessage(authMessage, `인증 처리 중 오류가 발생했습니다.<br>${err.message}`, 'error');
+    function initMonthOptions() {
+      const monthSelect = document.getElementById("month");
+      for (let i = 1; i <= 12; i++) {
+        const option = document.createElement("option");
+        option.value = i;
+        option.textContent = `${i}월`;
+        monthSelect.appendChild(option);
       }
-    });
+    }
 
-    async function loadUserProfile(uid) {
-      const snap = await getDoc(doc(db, 'users', uid));
-      if (snap.exists()) return snap.data();
+    function saveData() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(scheduleData));
+    }
 
-      const fallback = {
-        uid,
-        name: currentUser?.email?.split('@')[0] || '사용자',
-        dept: '미지정',
-        email: currentUser?.email || '',
-        role: 'member',
-        createdAt: serverTimestamp()
+    function loadData() {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) {
+        scheduleData = JSON.parse(saved).map(item => ({
+          ...item,
+          project: item.project || "미분류",
+          manager: item.manager || "-",
+          note: item.note || "-",
+          done: Boolean(item.done)
+        }));
+      } else {
+        scheduleData = defaultData;
+        saveData();
+      }
+    }
+
+    function getNextId() {
+      if (scheduleData.length === 0) return 1;
+      return Math.max(...scheduleData.map(item => item.id)) + 1;
+    }
+
+    function getFormValues() {
+      return {
+        project: document.getElementById("project").value.trim(),
+        month: document.getElementById("month").value,
+        date: document.getElementById("date").value.trim(),
+        title: document.getElementById("title").value.trim(),
+        type: document.getElementById("type").value,
+        manager: document.getElementById("manager").value.trim(),
+        note: document.getElementById("note").value.trim()
       };
-      await setDoc(doc(db, 'users', uid), fallback);
-      return fallback;
     }
 
-    function openModal(mode = 'create', data = null, clickedDate = null) {
-      eventMessage.innerHTML = '';
-      eventForm.reset();
-      eventId.value = '';
-      eventColor.value = '#2563eb';
-      deleteEventBtn.classList.add('hidden');
+    function saveSchedule() {
+      const form = getFormValues();
 
-      if (mode === 'create') {
-        modalTitle.textContent = '일정 등록';
-        eventDept.value = currentProfile?.dept || '미지정';
-
-        const start = clickedDate ? toLocalInputValue(clickedDate) : toLocalInputValue(new Date());
-        const endBase = clickedDate ? new Date(clickedDate) : new Date();
-        endBase.setHours(endBase.getHours() + 1);
-        const end = toLocalInputValue(endBase);
-        eventStart.value = start;
-        eventEnd.value = end;
-      } else if (data) {
-        modalTitle.textContent = '일정 수정';
-        deleteEventBtn.classList.remove('hidden');
-
-        eventId.value = data.id;
-        eventTitle.value = data.title || '';
-        eventStart.value = toLocalInputValue(data.start?.toDate ? data.start.toDate() : new Date(data.start));
-        eventEnd.value = toLocalInputValue(data.end?.toDate ? data.end.toDate() : new Date(data.end));
-        allDay.checked = !!data.allDay;
-        eventDept.value = data.dept || '';
-        eventColor.value = data.color || '#2563eb';
-        eventRepeat.value = data.repeat || 'none';
-        eventLocation.value = data.location || '';
-        eventMemo.value = data.memo || '';
-      }
-
-      eventModal.classList.remove('hidden');
-    }
-
-    function closeModal() {
-      eventModal.classList.add('hidden');
-    }
-
-    closeModalBtn.addEventListener('click', closeModal);
-    eventModal.addEventListener('click', (e) => {
-      if (e.target === eventModal) closeModal();
-    });
-
-    function toLocalInputValue(date) {
-      const d = new Date(date);
-      const offset = d.getTimezoneOffset();
-      const local = new Date(d.getTime() - offset * 60000);
-      return local.toISOString().slice(0, 16);
-    }
-
-    function canEditEvent(eventData) {
-      if (!currentProfile) return false;
-      return currentProfile.role === 'admin' || eventData.ownerUid === currentUser?.uid;
-    }
-
-    eventForm.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      eventMessage.innerHTML = '';
-
-      if (!currentUser || !currentProfile) return;
-      if (currentProfile.role !== 'admin') {
-        showMessage(eventMessage, '현재 기본 설정상 관리자만 일정 저장이 가능합니다.', 'error');
+      if (!form.project || !form.month || !form.date || !form.title) {
+        alert("사업명, 월, 날짜, 일정명은 꼭 입력하세요.");
         return;
       }
 
-      try {
-        const payload = {
-          title: eventTitle.value.trim(),
-          start: new Date(eventStart.value),
-          end: new Date(eventEnd.value),
-          allDay: allDay.checked,
-          dept: eventDept.value.trim(),
-          color: eventColor.value,
-          repeat: eventRepeat.value,
-          location: eventLocation.value.trim(),
-          memo: eventMemo.value.trim(),
-          ownerUid: currentUser.uid,
-          ownerEmail: currentUser.email,
-          updatedAt: serverTimestamp()
-        };
-
-        if (!payload.title) {
-          showMessage(eventMessage, '일정명을 입력하세요.', 'error');
-          return;
-        }
-
-        if (payload.end < payload.start) {
-          showMessage(eventMessage, '종료일시는 시작일시보다 뒤여야 합니다.', 'error');
-          return;
-        }
-
-        if (eventId.value) {
-          await updateDoc(doc(db, 'events', eventId.value), payload);
-        } else {
-          payload.createdAt = serverTimestamp();
-          await addDoc(collection(db, 'events'), payload);
-        }
-
-        closeModal();
-      } catch (err) {
-        showMessage(eventMessage, `일정 저장 중 오류가 발생했습니다.<br>${err.message}`, 'error');
-      }
-    });
-
-    deleteEventBtn.addEventListener('click', async () => {
-      if (!eventId.value) return;
-      if (!currentProfile || currentProfile.role !== 'admin') {
-        showMessage(eventMessage, '관리자만 삭제할 수 있습니다.', 'error');
-        return;
-      }
-
-      try {
-        await deleteDoc(doc(db, 'events', eventId.value));
-        closeModal();
-      } catch (err) {
-        showMessage(eventMessage, `삭제 중 오류가 발생했습니다.<br>${err.message}`, 'error');
-      }
-    });
-
-    function buildCalendar() {
-      const el = document.getElementById('calendar');
-      calendar = new FullCalendar.Calendar(el, {
-        locale: 'ko',
-        initialView: 'dayGridMonth',
-        height: 'auto',
-        headerToolbar: {
-          left: 'prev,next today',
-          center: 'title',
-          right: 'dayGridMonth,timeGridWeek,listWeek'
-        },
-        selectable: true,
-        dateClick(info) {
-          if (!currentProfile || currentProfile.role !== 'admin') return;
-          openModal('create', null, info.date);
-        },
-        eventClick(info) {
-          const matched = allEvents.find((item) => item.id === info.event.id);
-          if (!matched) return;
-          if (!canEditEvent(matched) && currentProfile?.role !== 'admin') {
-            alert(`일정명: ${matched.title}\n부서: ${matched.dept || '-'}\n장소: ${matched.location || '-'}\n비고: ${matched.memo || '-'}`);
-            return;
-          }
-          openModal('edit', matched);
-        },
-        events: []
-      });
-      calendar.render();
-    }
-
-    function expandRecurringEvents(baseEvent) {
-      const repeat = baseEvent.repeat || 'none';
-      if (repeat === 'none') return [baseEvent];
-
-      const results = [];
-      const start = new Date(baseEvent.start);
-      const end = new Date(baseEvent.end);
-
-      for (let i = 0; i < 12; i++) {
-        const newStart = new Date(start);
-        const newEnd = new Date(end);
-
-        if (repeat === 'daily') {
-          newStart.setDate(start.getDate() + i);
-          newEnd.setDate(end.getDate() + i);
-        } else if (repeat === 'weekly') {
-          newStart.setDate(start.getDate() + (i * 7));
-          newEnd.setDate(end.getDate() + (i * 7));
-        } else if (repeat === 'monthly') {
-          newStart.setMonth(start.getMonth() + i);
-          newEnd.setMonth(end.getMonth() + i);
-        }
-
-        results.push({
-          ...baseEvent,
-          id: `${baseEvent.id}_${repeat}_${i}`,
-          originalId: baseEvent.id,
-          start: newStart,
-          end: newEnd
+      if (editingId === null) {
+        scheduleData.push({
+          id: getNextId(),
+          project: form.project,
+          month: Number(form.month),
+          date: form.date,
+          title: form.title,
+          type: form.type,
+          manager: form.manager || "-",
+          note: form.note || "-",
+          done: false
         });
+      } else {
+        scheduleData = scheduleData.map(item =>
+          item.id === editingId
+            ? {
+                ...item,
+                project: form.project,
+                month: Number(form.month),
+                date: form.date,
+                title: form.title,
+                type: form.type,
+                manager: form.manager || "-",
+                note: form.note || "-"
+              }
+            : item
+        );
       }
 
-      return results;
+      saveData();
+      refreshProjectFilterOptions();
+      renderAll();
+      clearForm();
+      setAddMode();
     }
 
-    function renderUpcoming(events) {
-      const sorted = [...events]
-        .sort((a, b) => new Date(a.start) - new Date(b.start))
-        .slice(0, 8);
+    function editSchedule(id) {
+      const item = scheduleData.find(x => x.id === id);
+      if (!item) return;
 
-      if (!sorted.length) {
-        upcomingList.innerHTML = '<p class="mini">등록된 일정이 없습니다.</p>';
-        return;
+      editingId = id;
+      document.getElementById("project").value = item.project;
+      document.getElementById("month").value = item.month;
+      document.getElementById("date").value = item.date;
+      document.getElementById("title").value = item.title;
+      document.getElementById("type").value = item.type;
+      document.getElementById("manager").value = item.manager === "-" ? "" : item.manager;
+      document.getElementById("note").value = item.note === "-" ? "" : item.note;
+
+      document.getElementById("saveBtn").textContent = "수정 저장";
+      document.getElementById("cancelEditBtn").style.display = "inline-block";
+      document.getElementById("modeBadge").textContent = `일정 수정 중 (ID ${id})`;
+
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function cancelEdit() {
+      clearForm();
+      setAddMode();
+    }
+
+    function setAddMode() {
+      editingId = null;
+      document.getElementById("saveBtn").textContent = "일정 추가";
+      document.getElementById("cancelEditBtn").style.display = "none";
+      document.getElementById("modeBadge").textContent = "새 일정 추가";
+    }
+
+    function deleteSchedule(id) {
+      const ok = confirm("이 일정을 삭제할까요?");
+      if (!ok) return;
+
+      scheduleData = scheduleData.filter(item => item.id !== id);
+      saveData();
+      refreshProjectFilterOptions();
+      renderAll();
+
+      if (editingId === id) {
+        clearForm();
+        setAddMode();
       }
+    }
 
-      upcomingList.innerHTML = sorted.map(item => `
-        <div class="event-item" style="border-left-color:${item.color || '#2563eb'}">
-          <h4>${escapeHtml(item.title)}</h4>
-          <p>일시: ${formatDate(item.start)} ~ ${formatDate(item.end)}</p>
-          <p>부서: ${escapeHtml(item.dept || '-')}</p>
-          <p>등록자: ${escapeHtml(item.ownerEmail || '-')}</p>
+    function toggleDone(id) {
+      scheduleData = scheduleData.map(item =>
+        item.id === id ? { ...item, done: !item.done } : item
+      );
+      saveData();
+      renderAll();
+    }
+
+    function focusAddForm(month) {
+      clearForm();
+      setAddMode();
+      document.getElementById("month").value = month;
+      document.getElementById("title").focus();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function clearForm() {
+      document.getElementById("project").value = "";
+      document.getElementById("month").value = "";
+      document.getElementById("date").value = "";
+      document.getElementById("title").value = "";
+      document.getElementById("type").value = "event";
+      document.getElementById("manager").value = "";
+      document.getElementById("note").value = "";
+    }
+
+    function clearAllSchedules() {
+      const ok = confirm("저장된 일정을 모두 초기화할까요? 현재 브라우저 데이터가 삭제됩니다.");
+      if (!ok) return;
+      scheduleData = [...defaultData];
+      saveData();
+      refreshProjectFilterOptions();
+      renderAll();
+      clearForm();
+      setAddMode();
+    }
+
+    function getProjectList() {
+      const projects = [...new Set(
+        scheduleData
+          .map(item => (item.project || "").trim())
+          .filter(Boolean)
+      )];
+      return projects.sort((a, b) => a.localeCompare(b, "ko"));
+    }
+
+    function refreshProjectFilterOptions() {
+      const filter = document.getElementById("projectFilter");
+      const currentValue = filter.value || FILTER_ALL;
+      const projects = getProjectList();
+
+      filter.innerHTML = `<option value="${FILTER_ALL}">전체 보기</option>`;
+
+      projects.forEach(project => {
+        const option = document.createElement("option");
+        option.value = project;
+        option.textContent = project;
+        filter.appendChild(option);
+      });
+
+      const stillExists = currentValue === FILTER_ALL || projects.includes(currentValue);
+      filter.value = stillExists ? currentValue : FILTER_ALL;
+      updateCurrentFilterText();
+    }
+
+    function getSelectedProjectFilter() {
+      return document.getElementById("projectFilter").value;
+    }
+
+    function getKeywordFilter() {
+      return document.getElementById("keywordFilter").value.trim().toLowerCase();
+    }
+
+    function handleFilterChange() {
+      updateCurrentFilterText();
+      renderAll();
+    }
+
+    function updateCurrentFilterText() {
+      const selected = getSelectedProjectFilter();
+      const keyword = getKeywordFilter();
+      let text = selected === FILTER_ALL ? "현재 필터: 전체 보기" : `현재 필터: ${selected}`;
+      if (keyword) text += ` / 검색어: ${keyword}`;
+      document.getElementById("currentFilterText").textContent = text;
+    }
+
+    function itemMatchesFilters(item) {
+      const selectedProject = getSelectedProjectFilter();
+      const keyword = getKeywordFilter();
+
+      const projectPass = selectedProject === FILTER_ALL || item.project === selectedProject;
+      const keywordTarget = `${item.title} ${item.manager} ${item.note} ${item.project}`.toLowerCase();
+      const keywordPass = !keyword || keywordTarget.includes(keyword);
+
+      return projectPass && keywordPass;
+    }
+
+    function getFilteredItemsByMonth(month) {
+      const items = scheduleData.filter(item => item.month === month && itemMatchesFilters(item));
+      return sortByDate(items);
+    }
+
+    function createMonthCard(month, items) {
+      const card = document.createElement("div");
+      card.className = "month-card";
+
+      const header = document.createElement("div");
+      header.className = "month-header";
+      header.innerHTML = `
+        <div>
+          <div class="month-title">${month}월</div>
+          <div class="month-summary">총 ${items.length}건</div>
         </div>
-      `).join('');
-    }
+        <button class="month-add-btn" onclick="focusAddForm(${month})">+ 일정추가</button>
+      `;
+      card.appendChild(header);
 
-    function formatDate(value) {
-      const d = new Date(value);
-      return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')} ${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
-    }
-
-    function escapeHtml(str) {
-      return String(str)
-        .replaceAll('&', '&amp;')
-        .replaceAll('<', '&lt;')
-        .replaceAll('>', '&gt;')
-        .replaceAll('"', '&quot;')
-        .replaceAll("'", '&#039;');
-    }
-
-    function applyFilters(events) {
-      const deptValue = filterDept.value;
-      const ownerValue = filterOwner.value.trim().toLowerCase();
-
-      return events.filter(item => {
-        const deptPass = deptValue === 'all' || (item.dept || '') === deptValue;
-        const ownerPass = !ownerValue || (item.ownerEmail || '').toLowerCase().includes(ownerValue);
-        return deptPass && ownerPass;
-      });
-    }
-
-    function refreshCalendarView() {
-      const filteredBaseEvents = applyFilters(allEvents);
-      const expanded = filteredBaseEvents.flatMap(expandRecurringEvents);
-
-      calendar.removeAllEvents();
-      expanded.forEach(item => {
-        calendar.addEvent({
-          id: item.originalId || item.id,
-          title: item.title,
-          start: item.start,
-          end: item.end,
-          allDay: item.allDay,
-          color: item.color,
-          extendedProps: {
-            dept: item.dept,
-            location: item.location,
-            memo: item.memo,
-            ownerEmail: item.ownerEmail
-          }
-        });
-      });
-
-      renderUpcoming(filteredBaseEvents);
-    }
-
-    applyFilterBtn.addEventListener('click', refreshCalendarView);
-    resetFilterBtn.addEventListener('click', () => {
-      filterDept.value = 'all';
-      filterOwner.value = '';
-      refreshCalendarView();
-    });
-
-    openCreateBtn.addEventListener('click', () => {
-      if (!currentProfile || currentProfile.role !== 'admin') {
-        alert('관리자만 일정 등록이 가능합니다.');
-        return;
+      if (items.length === 0) {
+        const empty = document.createElement("div");
+        empty.className = "empty";
+        empty.textContent = "등록된 일정이 없습니다.";
+        card.appendChild(empty);
+        return card;
       }
-      openModal('create');
-    });
 
-    logoutBtn.addEventListener('click', async () => {
-      await signOut(auth);
-    });
+      items.forEach(item => {
+        const box = document.createElement("div");
+        box.className = `item ${item.type} ${item.done ? "done" : ""}`;
 
-    function bindEventsRealtime() {
-      if (unsubEvents) unsubEvents();
+        box.innerHTML = `
+          <div class="btn-group">
+            <button class="done-btn ${item.done ? "cancel-done" : ""}" onclick="toggleDone(${item.id})">${item.done ? "완료취소" : "완료"}</button>
+            <button class="edit-btn" onclick="editSchedule(${item.id})">수정</button>
+            <button class="delete-btn" onclick="deleteSchedule(${item.id})">삭제</button>
+          </div>
+          <div class="date">${item.date}</div>
+          <div class="title">${item.title}</div>
+          <div class="meta">담당: ${item.manager}</div>
+          <div class="meta">비고: ${item.note}</div>
+          <div class="badge-row">
+            <div class="category-badge">${item.project}</div>
+            ${item.done ? '<div class="status-text">완료된 일정</div>' : ''}
+          </div>
+        `;
 
-      const q = query(collection(db, 'events'), orderBy('start', 'asc'));
-      unsubEvents = onSnapshot(q, (snapshot) => {
-        allEvents = snapshot.docs.map(docSnap => {
-          const data = docSnap.data();
-          deptOptions.add(data.dept || '미지정');
-          return { id: docSnap.id, ...data };
-        });
+        card.appendChild(box);
+      });
 
-        filterDept.innerHTML = '<option value="all">전체 부서</option>' +
-          Array.from(deptOptions)
-            .sort((a, b) => a.localeCompare(b, 'ko'))
-            .map(dept => `<option value="${dept}">${dept}</option>`)
-            .join('');
+      return card;
+    }
 
-        refreshCalendarView();
-      }, (err) => {
-        alert('일정 불러오기 중 오류가 발생했습니다: ' + err.message);
+    function sortByDate(items) {
+      return [...items].sort((a, b) => {
+        const aParts = a.date.split(".").map(v => parseInt(v, 10) || 0);
+        const bParts = b.date.split(".").map(v => parseInt(v, 10) || 0);
+
+        const aMonth = aParts[0] || 0;
+        const aDay = aParts[1] || 0;
+        const bMonth = bParts[0] || 0;
+        const bDay = bParts[1] || 0;
+
+        if (aMonth !== bMonth) return aMonth - bMonth;
+        if (aDay !== bDay) return aDay - bDay;
+        if (a.done !== b.done) return a.done - b.done;
+        return a.title.localeCompare(b.title, "ko");
       });
     }
 
-    onAuthStateChanged(auth, async (user) => {
-      currentUser = user;
+    function renderQuickList() {
+      const quickList = document.getElementById("quickList");
+      const items = sortByDate(scheduleData.filter(itemMatchesFilters)).slice(0, 6);
 
-      if (!user) {
-        authPage.classList.remove('hidden');
-        appShell.classList.add('hidden');
-        currentProfile = null;
-        if (unsubEvents) unsubEvents();
+      if (items.length === 0) {
+        quickList.innerHTML = '<div class="empty">조건에 맞는 일정이 없습니다.</div>';
         return;
       }
 
-      currentProfile = await loadUserProfile(user.uid);
+      quickList.innerHTML = items.map(item => `
+        <div class="quick-item">
+          <div class="q-date">${item.month}월 · ${item.date}</div>
+          <div class="q-title">${item.title}</div>
+          <div class="q-meta">${item.project} / 담당: ${item.manager}${item.done ? ' / 완료' : ''}</div>
+        </div>
+      `).join("");
+    }
 
-      authPage.classList.add('hidden');
-      appShell.classList.remove('hidden');
+    function renderStats() {
+      const filtered = scheduleData.filter(itemMatchesFilters);
+      const doneCount = filtered.filter(item => item.done).length;
+      document.getElementById("statTotal").textContent = filtered.length;
+      document.getElementById("statDone").textContent = doneCount;
+      document.getElementById("statPending").textContent = filtered.length - doneCount;
+    }
 
-      welcomeText.textContent = `${currentProfile.name} (${currentProfile.dept}) · ${user.email}`;
-      roleBadge.textContent = currentProfile.role === 'admin' ? '관리자' : '일반 사용자';
-      roleBadge.style.background = currentProfile.role === 'admin' ? '#dcfce7' : '#eef2ff';
-      roleBadge.style.color = currentProfile.role === 'admin' ? '#166534' : '#3730a3';
+    function renderSchedule() {
+      const scheduleGrid = document.getElementById("scheduleGrid");
+      scheduleGrid.innerHTML = "";
 
-      if (!calendar) buildCalendar();
-      bindEventsRealtime();
-    });
+      for (let month = 1; month <= 12; month++) {
+        const items = getFilteredItemsByMonth(month);
+        const monthCard = createMonthCard(month, items);
+        scheduleGrid.appendChild(monthCard);
+      }
+    }
 
-    setAuthMode('login');
+    function renderAll() {
+      renderStats();
+      renderSchedule();
+      renderQuickList();
+    }
 
-    // 첫 관리자 지정 방법(수동)
-    // Firestore users 컬렉션에서 본인 문서의 role 값을 'admin'으로 수정하세요.
+    initMonthOptions();
+    loadData();
+    setAddMode();
+    refreshProjectFilterOptions();
+    renderAll();
   </script>
 </body>
 </html>
