@@ -30,12 +30,27 @@
       color: var(--text);
     }
 
-    .wrap {
-      max-width: 1520px;
-      margin: 0 auto;
-      padding: 24px 20px 40px;
+    .hidden { display: none !important; }
+
+    .page {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
     }
 
+    .auth-wrap {
+      width: 100%;
+      max-width: 1080px;
+      display: grid;
+      grid-template-columns: 1.2fr 420px;
+      gap: 22px;
+      align-items: stretch;
+    }
+
+    .auth-hero,
+    .auth-card,
     .hero,
     .panel,
     .month-card {
@@ -43,6 +58,183 @@
       border: 1px solid var(--line);
       border-radius: 18px;
       box-shadow: var(--shadow);
+    }
+
+    .auth-hero {
+      padding: 34px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 540px;
+      background: linear-gradient(135deg, #eff6ff 0%, #ffffff 55%, #f8fbff 100%);
+    }
+
+    .auth-hero h1 {
+      margin: 0;
+      font-size: 34px;
+      line-height: 1.25;
+    }
+
+    .auth-hero p {
+      margin: 14px 0 0;
+      color: #475467;
+      font-size: 15px;
+      line-height: 1.7;
+    }
+
+    .auth-points {
+      display: grid;
+      gap: 12px;
+      margin-top: 28px;
+    }
+
+    .auth-point {
+      background: rgba(255,255,255,0.75);
+      border: 1px solid #dbe8ff;
+      border-radius: 14px;
+      padding: 14px 16px;
+    }
+
+    .auth-point strong {
+      display: block;
+      margin-bottom: 4px;
+      font-size: 15px;
+    }
+
+    .auth-point span {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    .auth-card {
+      padding: 28px;
+      align-self: center;
+    }
+
+    .auth-card h2 {
+      margin: 0 0 8px;
+      font-size: 26px;
+    }
+
+    .auth-sub {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.6;
+      margin-bottom: 16px;
+    }
+
+    .auth-switch {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .auth-switch button,
+    .btn,
+    .field-grid input,
+    .field-grid select {
+      width: 100%;
+      padding: 11px 12px;
+      border-radius: 10px;
+      font-size: 14px;
+    }
+
+    .auth-switch button {
+      border: none;
+      cursor: pointer;
+      font-weight: 800;
+    }
+
+    .field-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+
+    .field-grid input,
+    .field-grid select {
+      border: 1px solid #d6e0ea;
+      background: #fff;
+    }
+
+    .field-grid input:focus,
+    .field-grid select:focus {
+      outline: none;
+      border-color: #93c5fd;
+      box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.08);
+    }
+
+    .btn {
+      border: none;
+      cursor: pointer;
+      font-weight: 800;
+      transition: transform 0.12s ease, opacity 0.2s ease;
+    }
+
+    .btn:hover { opacity: 0.94; }
+    .btn:active { transform: translateY(1px); }
+
+    .btn-primary { background: var(--primary); color: white; }
+    .btn-secondary { background: #eef2ff; color: #334155; }
+    .btn-ghost { background: #edf2f7; color: #334155; }
+    .btn-danger { background: #e03131; color: white; }
+    .btn-warning { background: #f08c00; color: white; }
+    .btn-success { background: #2b8a3e; color: white; }
+
+    .notice, .error, .helper {
+      margin-top: 12px;
+      padding: 11px 12px;
+      border-radius: 12px;
+      font-size: 12px;
+      line-height: 1.55;
+    }
+
+    .notice {
+      background: #f8fbff;
+      border: 1px solid #e0ebff;
+      color: #3b4b63;
+    }
+
+    .error {
+      background: #fef2f2;
+      border: 1px solid #fecaca;
+      color: #b91c1c;
+    }
+
+    .wrap {
+      max-width: 1520px;
+      margin: 0 auto;
+      padding: 24px 20px 40px;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-bottom: 18px;
+    }
+
+    .topbar-info {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      background: #eef4ff;
+      color: #334155;
+      padding: 7px 10px;
+      border-radius: 999px;
+      font-weight: 700;
     }
 
     .hero {
@@ -130,9 +322,7 @@
       margin-bottom: 18px;
     }
 
-    .panel {
-      padding: 18px;
-    }
+    .panel { padding: 18px; }
 
     .panel-title-row {
       display: flex;
@@ -165,30 +355,6 @@
       margin-bottom: 14px;
     }
 
-    .field-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 10px;
-    }
-
-    .field-grid input,
-    .field-grid select,
-    .field-grid button {
-      width: 100%;
-      padding: 11px 12px;
-      border: 1px solid #d6e0ea;
-      border-radius: 10px;
-      font-size: 14px;
-      background: #fff;
-    }
-
-    .field-grid input:focus,
-    .field-grid select:focus {
-      outline: none;
-      border-color: #93c5fd;
-      box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.08);
-    }
-
     .field-two {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -200,32 +366,6 @@
       grid-template-columns: 1fr 1fr;
       gap: 10px;
       margin-top: 6px;
-    }
-
-    button {
-      cursor: pointer;
-      border: none;
-      font-weight: 700;
-      transition: transform 0.12s ease, opacity 0.2s ease;
-    }
-
-    button:hover { opacity: 0.94; }
-    button:active { transform: translateY(1px); }
-
-    #saveBtn {
-      background: var(--primary);
-      color: white;
-    }
-
-    #cancelEditBtn {
-      background: #6b7280;
-      color: white;
-      display: none;
-    }
-
-    .secondary-btn {
-      background: #edf2f7;
-      color: #334155;
     }
 
     .current-filter {
@@ -459,19 +599,9 @@
     .done-btn { background: #2b8a3e; }
     .done-btn.cancel-done { background: #495057; }
 
-    .helper {
-      margin-top: 10px;
-      padding: 11px 12px;
-      border-radius: 12px;
-      background: #f8fbff;
-      border: 1px solid #e0ebff;
-      color: #3b4b63;
-      font-size: 12px;
-      line-height: 1.55;
-    }
-
     @media (max-width: 1380px) {
-      .hero { grid-template-columns: 1fr; }
+      .auth-wrap,
+      .hero,
       .dashboard { grid-template-columns: 1fr; }
     }
 
@@ -481,11 +611,12 @@
     }
 
     @media (max-width: 760px) {
-      .wrap { padding: 14px 12px 24px; }
+      .wrap, .page { padding: 14px 12px 24px; }
       .grid { grid-template-columns: 1fr; }
       .hero-right,
       .field-two,
-      .btn-row { grid-template-columns: 1fr; }
+      .btn-row,
+      .auth-switch { grid-template-columns: 1fr; }
       .month-header { align-items: stretch; flex-direction: column; }
       .btn-group {
         position: static;
@@ -497,486 +628,743 @@
   </style>
 </head>
 <body>
-  <div class="wrap">
-    <section class="hero">
-      <div>
-        <h1>2026년 부서 연간일정표</h1>
-        <div class="desc">월별 카드 형태로 한눈에 보고, 일정 추가 / 수정 / 삭제 / 완료 처리 / 사업별 필터까지 가능한 버전입니다. 데이터는 현재 브라우저에 저장됩니다.</div>
-        <div class="legend">
-          <span><i class="dot event"></i> 행사</span>
-          <span><i class="dot deadline"></i> 마감</span>
-          <span><i class="dot meeting"></i> 회의</span>
-          <span><i class="dot notice"></i> 공지</span>
-          <span><i class="dot done-dot"></i> 완료</span>
-        </div>
-      </div>
-      <div class="hero-right">
-        <div class="stat-card">
-          <div class="stat-label">전체 일정</div>
-          <div class="stat-value" id="statTotal">0</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-label">완료 일정</div>
-          <div class="stat-value" id="statDone">0</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-label">진행 예정</div>
-          <div class="stat-value" id="statPending">0</div>
-        </div>
-      </div>
-    </section>
+  <section id="authPage" class="page">
+    <div class="auth-wrap">
+      <div class="auth-hero">
+        <div>
+          <h1>부서 연간일정표<br>로그인 포털</h1>
+          <p>부서별 연간 계획, 마감 일정, 회의, 공지사항을 한 곳에서 관리하는 업무용 일정표입니다. 로그인 후 일정 조회, 권한이 있는 경우 일정 등록·수정·삭제가 가능합니다.</p>
 
-    <section class="dashboard">
-      <aside class="panel">
-        <div class="panel-title-row">
-          <div class="panel-title">일정 관리</div>
-          <span id="modeBadge" class="mode-badge">새 일정 추가</span>
-        </div>
-        <div class="panel-desc">입력 후 저장하면 월별 카드에 바로 반영됩니다. 수정 중일 때는 버튼 문구와 모드 표시가 변경됩니다.</div>
-
-        <div class="field-grid">
-          <input type="text" id="project" placeholder="사업명 / 큰 카테고리" />
-
-          <div class="field-two">
-            <select id="month">
-              <option value="">월 선택</option>
-            </select>
-            <input type="text" id="date" placeholder="예: 3.15" />
-          </div>
-
-          <input type="text" id="title" placeholder="일정명" />
-
-          <div class="field-two">
-            <select id="type">
-              <option value="event">행사</option>
-              <option value="deadline">마감</option>
-              <option value="meeting">회의</option>
-              <option value="notice">공지</option>
-            </select>
-            <input type="text" id="manager" placeholder="담당자 / 부서" />
-          </div>
-
-          <input type="text" id="note" placeholder="비고 / 준비사항 / 참고내용" />
-
-          <div class="btn-row">
-            <button id="saveBtn" onclick="saveSchedule()">일정 추가</button>
-            <button id="cancelEditBtn" onclick="cancelEdit()">수정 취소</button>
-          </div>
-
-          <button class="secondary-btn" onclick="clearAllSchedules()">전체 일정 초기화</button>
-        </div>
-
-        <div class="helper">팁: 각 월 카드의 <b>+ 일정추가</b>를 누르면 해당 월이 자동으로 입력됩니다.</div>
-      </aside>
-
-      <section>
-        <div class="panel" style="margin-bottom: 18px;">
-          <div class="panel-title-row">
-            <div class="panel-title">사업별 보기</div>
-            <span class="filter-chip">필터 적용형 보기</span>
-          </div>
-          <div class="panel-desc">특정 사업만 골라서 월별 일정을 볼 수 있습니다.</div>
-
-          <div class="field-two">
-            <select id="projectFilter" onchange="handleFilterChange()">
-              <option value="__ALL__">전체 보기</option>
-            </select>
-            <input type="text" id="keywordFilter" placeholder="일정명 / 담당 / 비고 검색" oninput="handleFilterChange()" />
-          </div>
-          <div id="currentFilterText" class="current-filter">현재 필터: 전체 보기</div>
-        </div>
-
-        <div class="panel" style="margin-bottom: 18px;">
-          <div class="month-topbar">
-            <div>
-              <h2>월별 일정 현황</h2>
-              <p>카드형 레이아웃으로 1월부터 12월까지 한 번에 확인할 수 있습니다.</p>
+          <div class="auth-points">
+            <div class="auth-point">
+              <strong>월별 카드형 일정표</strong>
+              <span>1월부터 12월까지 한 번에 보면서 일정 흐름을 빠르게 파악할 수 있습니다.</span>
+            </div>
+            <div class="auth-point">
+              <strong>사업별 필터 / 검색</strong>
+              <span>특정 사업만 골라서 보거나 제목·담당·비고 기준으로 검색할 수 있습니다.</span>
+            </div>
+            <div class="auth-point">
+              <strong>권한 기반 운영</strong>
+              <span>관리자는 일정 등록·수정·삭제 가능, 일반 사용자는 조회 위주로 사용할 수 있게 구성했습니다.</span>
             </div>
           </div>
-          <div id="scheduleGrid" class="grid"></div>
+        </div>
+
+        <div class="notice">배포 전 Firebase 콘솔에서 Authentication의 <b>Email/Password</b> 로그인 방식을 활성화하고, Firestore 데이터베이스를 생성해야 합니다.</div>
+      </div>
+
+      <div class="auth-card">
+        <h2>로그인</h2>
+        <div class="auth-sub">이메일과 비밀번호로 로그인하거나 신규 계정을 등록하세요.</div>
+
+        <div class="auth-switch">
+          <button id="showLoginBtn" class="btn btn-primary" type="button">로그인</button>
+          <button id="showSignupBtn" class="btn btn-secondary" type="button">회원가입</button>
+        </div>
+
+        <form id="authForm" class="field-grid">
+          <input id="nameInput" type="text" placeholder="이름 (회원가입 시 입력)" />
+          <input id="deptInput" type="text" placeholder="부서명 (회원가입 시 입력)" />
+          <input id="emailInput" type="email" placeholder="이메일" required />
+          <input id="passwordInput" type="password" placeholder="비밀번호" required />
+          <button id="submitAuthBtn" class="btn btn-primary" type="submit">로그인 실행</button>
+        </form>
+
+        <div id="authMessage"></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="appPage" class="hidden">
+    <div class="wrap">
+      <div class="topbar">
+        <div>
+          <div style="font-size: 22px; font-weight: 800;">부서 연간일정표</div>
+          <div style="font-size: 13px; color: var(--muted); margin-top: 4px;">로그인 기반 일정 관리 버전</div>
+        </div>
+        <div class="topbar-info">
+          <span id="userChip" class="chip">사용자 확인 중</span>
+          <span id="roleChip" class="chip">권한 확인 중</span>
+          <button id="logoutBtn" class="btn btn-ghost" type="button">로그아웃</button>
+        </div>
+      </div>
+
+      <section class="hero">
+        <div>
+          <h1>2026년 부서 연간일정표</h1>
+          <div class="desc">월별 카드 형태로 한눈에 보고, 일정 추가 / 수정 / 삭제 / 완료 처리 / 사업별 필터까지 가능한 버전입니다. 데이터는 Firebase Firestore에 저장됩니다.</div>
+          <div class="legend">
+            <span><i class="dot event"></i> 행사</span>
+            <span><i class="dot deadline"></i> 마감</span>
+            <span><i class="dot meeting"></i> 회의</span>
+            <span><i class="dot notice"></i> 공지</span>
+            <span><i class="dot done-dot"></i> 완료</span>
+          </div>
+        </div>
+        <div class="hero-right">
+          <div class="stat-card">
+            <div class="stat-label">전체 일정</div>
+            <div class="stat-value" id="statTotal">0</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">완료 일정</div>
+            <div class="stat-value" id="statDone">0</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">진행 예정</div>
+            <div class="stat-value" id="statPending">0</div>
+          </div>
         </div>
       </section>
-    </section>
 
-    <section class="panel">
-      <div class="panel-title-row">
-        <div class="panel-title">다가오는 일정</div>
-        <span class="filter-chip">상위 6건</span>
-      </div>
-      <div class="panel-desc">필터가 적용된 상태를 기준으로 가까운 일정부터 보여줍니다.</div>
-      <div id="quickList" class="quick-list"></div>
-    </section>
-  </div>
+      <section class="dashboard">
+        <aside class="panel">
+          <div class="panel-title-row">
+            <div class="panel-title">일정 관리</div>
+            <span id="modeBadge" class="mode-badge">새 일정 추가</span>
+          </div>
+          <div class="panel-desc">관리자는 일정 등록·수정·삭제·완료 처리가 가능합니다. 일반 사용자는 조회만 가능하게 기본 설정되어 있습니다.</div>
 
-  <script>
-    const STORAGE_KEY = "dept_schedule_data_2026_v2";
-    const FILTER_ALL = "__ALL__";
-    let editingId = null;
+          <form id="scheduleForm" class="field-grid">
+            <input type="text" id="project" placeholder="사업명 / 큰 카테고리" />
 
+            <div class="field-two">
+              <select id="month">
+                <option value="">월 선택</option>
+              </select>
+              <input type="text" id="date" placeholder="예: 3.15" />
+            </div>
+
+            <input type="text" id="title" placeholder="일정명" />
+
+            <div class="field-two">
+              <select id="type">
+                <option value="event">행사</option>
+                <option value="deadline">마감</option>
+                <option value="meeting">회의</option>
+                <option value="notice">공지</option>
+              </select>
+              <input type="text" id="manager" placeholder="담당자 / 부서" />
+            </div>
+
+            <input type="text" id="note" placeholder="비고 / 준비사항 / 참고내용" />
+
+            <div class="btn-row">
+              <button id="saveBtn" class="btn btn-primary" type="submit">일정 추가</button>
+              <button id="cancelEditBtn" class="btn btn-ghost hidden" type="button">수정 취소</button>
+            </div>
+          </form>
+
+          <button id="resetSampleBtn" class="btn btn-secondary" type="button" style="margin-top:10px;">샘플 일정 다시 넣기</button>
+          <div class="helper">팁: 각 월 카드의 <b>+ 일정추가</b>를 누르면 해당 월이 자동으로 입력됩니다.</div>
+          <div id="scheduleMessage"></div>
+        </aside>
+
+        <section>
+          <div class="panel" style="margin-bottom: 18px;">
+            <div class="panel-title-row">
+              <div class="panel-title">사업별 보기</div>
+              <span class="filter-chip">필터 적용형 보기</span>
+            </div>
+            <div class="panel-desc">특정 사업만 골라서 월별 일정을 볼 수 있습니다.</div>
+
+            <div class="field-two">
+              <select id="projectFilter">
+                <option value="__ALL__">전체 보기</option>
+              </select>
+              <input type="text" id="keywordFilter" placeholder="일정명 / 담당 / 비고 검색" />
+            </div>
+            <div id="currentFilterText" class="current-filter">현재 필터: 전체 보기</div>
+          </div>
+
+          <div class="panel" style="margin-bottom: 18px;">
+            <div class="month-topbar">
+              <div>
+                <h2>월별 일정 현황</h2>
+                <p>카드형 레이아웃으로 1월부터 12월까지 한 번에 확인할 수 있습니다.</p>
+              </div>
+            </div>
+            <div id="scheduleGrid" class="grid"></div>
+          </div>
+        </section>
+      </section>
+
+      <section class="panel">
+        <div class="panel-title-row">
+          <div class="panel-title">다가오는 일정</div>
+          <span class="filter-chip">상위 6건</span>
+        </div>
+        <div class="panel-desc">필터가 적용된 상태를 기준으로 가까운 일정부터 보여줍니다.</div>
+        <div id="quickList" class="quick-list"></div>
+      </section>
+    </div>
+  </section>
+
+  <script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js';
+    import {
+      getAuth,
+      onAuthStateChanged,
+      signInWithEmailAndPassword,
+      createUserWithEmailAndPassword,
+      signOut
+    } from 'https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js';
+    import {
+      getFirestore,
+      doc,
+      setDoc,
+      getDoc,
+      addDoc,
+      updateDoc,
+      deleteDoc,
+      collection,
+      onSnapshot,
+      query,
+      orderBy,
+      serverTimestamp,
+      writeBatch,
+      getDocs
+    } from 'https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js';
+
+    const firebaseConfig = {
+      apiKey: 'YOUR_API_KEY',
+      authDomain: 'YOUR_PROJECT.firebaseapp.com',
+      projectId: 'YOUR_PROJECT_ID',
+      storageBucket: 'YOUR_PROJECT.appspot.com',
+      messagingSenderId: 'YOUR_SENDER_ID',
+      appId: 'YOUR_APP_ID'
+    };
+
+    const FILTER_ALL = '__ALL__';
     const defaultData = [
-      { id: 1, project: "지원사업A", month: 1, date: "1.10", title: "사업계획 보고", type: "meeting", manager: "기획팀", note: "연간 운영방안 확정", done: false },
-      { id: 2, project: "지원사업A", month: 2, date: "2.28", title: "1차 접수 마감", type: "deadline", manager: "산업지원부", note: "18:00 마감", done: false },
-      { id: 3, project: "지원사업B", month: 3, date: "3.08", title: "심사위원회 개최", type: "meeting", manager: "운영팀", note: "평가자료 사전 배포", done: false },
-      { id: 4, project: "지원사업B", month: 4, date: "4.12", title: "선정 결과 통보", type: "notice", manager: "산업지원부", note: "공문 및 유선 안내", done: false },
-      { id: 5, project: "행사사업", month: 5, date: "5.20", title: "중간 점검자료 제출", type: "deadline", manager: "참여기관", note: "양식 준수", done: true }
+      { project: '지원사업A', month: 1, date: '1.10', title: '사업계획 보고', type: 'meeting', manager: '기획팀', note: '연간 운영방안 확정', done: false },
+      { project: '지원사업A', month: 2, date: '2.28', title: '1차 접수 마감', type: 'deadline', manager: '산업지원부', note: '18:00 마감', done: false },
+      { project: '지원사업B', month: 3, date: '3.08', title: '심사위원회 개최', type: 'meeting', manager: '운영팀', note: '평가자료 사전 배포', done: false },
+      { project: '지원사업B', month: 4, date: '4.12', title: '선정 결과 통보', type: 'notice', manager: '산업지원부', note: '공문 및 유선 안내', done: false },
+      { project: '행사사업', month: 5, date: '5.20', title: '중간 점검자료 제출', type: 'deadline', manager: '참여기관', note: '양식 준수', done: true }
     ];
 
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    const authPage = document.getElementById('authPage');
+    const appPage = document.getElementById('appPage');
+    const authForm = document.getElementById('authForm');
+    const showLoginBtn = document.getElementById('showLoginBtn');
+    const showSignupBtn = document.getElementById('showSignupBtn');
+    const submitAuthBtn = document.getElementById('submitAuthBtn');
+    const authMessage = document.getElementById('authMessage');
+    const scheduleMessage = document.getElementById('scheduleMessage');
+    const cancelEditBtn = document.getElementById('cancelEditBtn');
+    const logoutBtn = document.getElementById('logoutBtn');
+    const projectFilter = document.getElementById('projectFilter');
+    const keywordFilter = document.getElementById('keywordFilter');
+    const resetSampleBtn = document.getElementById('resetSampleBtn');
+    const scheduleForm = document.getElementById('scheduleForm');
+
+    let authMode = 'login';
+    let currentUser = null;
+    let currentProfile = null;
+    let editingId = null;
     let scheduleData = [];
+    let unsubSchedules = null;
+
+    function showMessage(target, html, type = 'notice') {
+      target.innerHTML = `<div class="${type}">${html}</div>`;
+    }
+
+    function setAuthMode(mode) {
+      authMode = mode;
+      submitAuthBtn.textContent = mode === 'login' ? '로그인 실행' : '회원가입 실행';
+      showLoginBtn.className = mode === 'login' ? 'btn btn-primary' : 'btn btn-secondary';
+      showSignupBtn.className = mode === 'signup' ? 'btn btn-primary' : 'btn btn-secondary';
+      authMessage.innerHTML = '';
+    }
+
+    showLoginBtn.addEventListener('click', () => setAuthMode('login'));
+    showSignupBtn.addEventListener('click', () => setAuthMode('signup'));
 
     function initMonthOptions() {
-      const monthSelect = document.getElementById("month");
+      const monthSelect = document.getElementById('month');
+      if (monthSelect.options.length > 1) return;
       for (let i = 1; i <= 12; i++) {
-        const option = document.createElement("option");
+        const option = document.createElement('option');
         option.value = i;
         option.textContent = `${i}월`;
         monthSelect.appendChild(option);
       }
     }
 
-    function saveData() {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(scheduleData));
-    }
+    authForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      authMessage.innerHTML = '';
+      const name = document.getElementById('nameInput').value.trim();
+      const dept = document.getElementById('deptInput').value.trim();
+      const email = document.getElementById('emailInput').value.trim();
+      const password = document.getElementById('passwordInput').value.trim();
 
-    function loadData() {
-      const saved = localStorage.getItem(STORAGE_KEY);
-      if (saved) {
-        scheduleData = JSON.parse(saved).map(item => ({
-          ...item,
-          project: item.project || "미분류",
-          manager: item.manager || "-",
-          note: item.note || "-",
-          done: Boolean(item.done)
-        }));
-      } else {
-        scheduleData = defaultData;
-        saveData();
+      try {
+        if (authMode === 'login') {
+          await signInWithEmailAndPassword(auth, email, password);
+        } else {
+          const cred = await createUserWithEmailAndPassword(auth, email, password);
+          await setDoc(doc(db, 'users', cred.user.uid), {
+            uid: cred.user.uid,
+            name: name || '이름 미입력',
+            dept: dept || '미지정',
+            email,
+            role: 'member',
+            createdAt: serverTimestamp()
+          });
+        }
+      } catch (err) {
+        showMessage(authMessage, `인증 처리 중 오류가 발생했습니다.<br>${err.message}`, 'error');
       }
+    });
+
+    async function loadUserProfile(uid) {
+      const ref = doc(db, 'users', uid);
+      const snap = await getDoc(ref);
+      if (snap.exists()) return snap.data();
+
+      const fallback = {
+        uid,
+        name: currentUser?.email?.split('@')[0] || '사용자',
+        dept: '미지정',
+        email: currentUser?.email || '',
+        role: 'member',
+        createdAt: serverTimestamp()
+      };
+      await setDoc(ref, fallback);
+      return fallback;
     }
 
-    function getNextId() {
-      if (scheduleData.length === 0) return 1;
-      return Math.max(...scheduleData.map(item => item.id)) + 1;
+    function canManage() {
+      return currentProfile?.role === 'admin';
+    }
+
+    function updateTopUserInfo() {
+      document.getElementById('userChip').textContent = `${currentProfile?.name || '사용자'} · ${currentProfile?.dept || '미지정'} · ${currentUser?.email || ''}`;
+      document.getElementById('roleChip').textContent = canManage() ? '관리자' : '일반 사용자';
     }
 
     function getFormValues() {
       return {
-        project: document.getElementById("project").value.trim(),
-        month: document.getElementById("month").value,
-        date: document.getElementById("date").value.trim(),
-        title: document.getElementById("title").value.trim(),
-        type: document.getElementById("type").value,
-        manager: document.getElementById("manager").value.trim(),
-        note: document.getElementById("note").value.trim()
+        project: document.getElementById('project').value.trim(),
+        month: document.getElementById('month').value,
+        date: document.getElementById('date').value.trim(),
+        title: document.getElementById('title').value.trim(),
+        type: document.getElementById('type').value,
+        manager: document.getElementById('manager').value.trim(),
+        note: document.getElementById('note').value.trim()
       };
     }
 
-    function saveSchedule() {
-      const form = getFormValues();
-
-      if (!form.project || !form.month || !form.date || !form.title) {
-        alert("사업명, 월, 날짜, 일정명은 꼭 입력하세요.");
-        return;
-      }
-
-      if (editingId === null) {
-        scheduleData.push({
-          id: getNextId(),
-          project: form.project,
-          month: Number(form.month),
-          date: form.date,
-          title: form.title,
-          type: form.type,
-          manager: form.manager || "-",
-          note: form.note || "-",
-          done: false
-        });
-      } else {
-        scheduleData = scheduleData.map(item =>
-          item.id === editingId
-            ? {
-                ...item,
-                project: form.project,
-                month: Number(form.month),
-                date: form.date,
-                title: form.title,
-                type: form.type,
-                manager: form.manager || "-",
-                note: form.note || "-"
-              }
-            : item
-        );
-      }
-
-      saveData();
-      refreshProjectFilterOptions();
-      renderAll();
-      clearForm();
-      setAddMode();
-    }
-
-    function editSchedule(id) {
-      const item = scheduleData.find(x => x.id === id);
-      if (!item) return;
-
-      editingId = id;
-      document.getElementById("project").value = item.project;
-      document.getElementById("month").value = item.month;
-      document.getElementById("date").value = item.date;
-      document.getElementById("title").value = item.title;
-      document.getElementById("type").value = item.type;
-      document.getElementById("manager").value = item.manager === "-" ? "" : item.manager;
-      document.getElementById("note").value = item.note === "-" ? "" : item.note;
-
-      document.getElementById("saveBtn").textContent = "수정 저장";
-      document.getElementById("cancelEditBtn").style.display = "inline-block";
-      document.getElementById("modeBadge").textContent = `일정 수정 중 (ID ${id})`;
-
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }
-
-    function cancelEdit() {
-      clearForm();
-      setAddMode();
+    function clearForm() {
+      document.getElementById('project').value = '';
+      document.getElementById('month').value = '';
+      document.getElementById('date').value = '';
+      document.getElementById('title').value = '';
+      document.getElementById('type').value = 'event';
+      document.getElementById('manager').value = '';
+      document.getElementById('note').value = '';
     }
 
     function setAddMode() {
       editingId = null;
-      document.getElementById("saveBtn").textContent = "일정 추가";
-      document.getElementById("cancelEditBtn").style.display = "none";
-      document.getElementById("modeBadge").textContent = "새 일정 추가";
+      document.getElementById('saveBtn').textContent = '일정 추가';
+      cancelEditBtn.classList.add('hidden');
+      document.getElementById('modeBadge').textContent = '새 일정 추가';
     }
 
-    function deleteSchedule(id) {
-      const ok = confirm("이 일정을 삭제할까요?");
-      if (!ok) return;
-
-      scheduleData = scheduleData.filter(item => item.id !== id);
-      saveData();
-      refreshProjectFilterOptions();
-      renderAll();
-
-      if (editingId === id) {
-        clearForm();
-        setAddMode();
-      }
-    }
-
-    function toggleDone(id) {
-      scheduleData = scheduleData.map(item =>
-        item.id === id ? { ...item, done: !item.done } : item
-      );
-      saveData();
-      renderAll();
-    }
-
-    function focusAddForm(month) {
+    cancelEditBtn.addEventListener('click', () => {
       clearForm();
       setAddMode();
-      document.getElementById("month").value = month;
-      document.getElementById("title").focus();
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }
+    });
 
-    function clearForm() {
-      document.getElementById("project").value = "";
-      document.getElementById("month").value = "";
-      document.getElementById("date").value = "";
-      document.getElementById("title").value = "";
-      document.getElementById("type").value = "event";
-      document.getElementById("manager").value = "";
-      document.getElementById("note").value = "";
-    }
-
-    function clearAllSchedules() {
-      const ok = confirm("저장된 일정을 모두 초기화할까요? 현재 브라우저 데이터가 삭제됩니다.");
-      if (!ok) return;
-      scheduleData = [...defaultData];
-      saveData();
-      refreshProjectFilterOptions();
-      renderAll();
-      clearForm();
-      setAddMode();
+    function sortByDate(items) {
+      return [...items].sort((a, b) => {
+        const aParts = String(a.date || '').split('.').map(v => parseInt(v, 10) || 0);
+        const bParts = String(b.date || '').split('.').map(v => parseInt(v, 10) || 0);
+        const aMonth = aParts[0] || Number(a.month) || 0;
+        const aDay = aParts[1] || 0;
+        const bMonth = bParts[0] || Number(b.month) || 0;
+        const bDay = bParts[1] || 0;
+        if (aMonth !== bMonth) return aMonth - bMonth;
+        if (aDay !== bDay) return aDay - bDay;
+        if (a.done !== b.done) return a.done - b.done;
+        return String(a.title || '').localeCompare(String(b.title || ''), 'ko');
+      });
     }
 
     function getProjectList() {
       const projects = [...new Set(
-        scheduleData
-          .map(item => (item.project || "").trim())
-          .filter(Boolean)
+        scheduleData.map(item => (item.project || '').trim()).filter(Boolean)
       )];
-      return projects.sort((a, b) => a.localeCompare(b, "ko"));
+      return projects.sort((a, b) => a.localeCompare(b, 'ko'));
     }
 
     function refreshProjectFilterOptions() {
-      const filter = document.getElementById("projectFilter");
-      const currentValue = filter.value || FILTER_ALL;
+      const currentValue = projectFilter.value || FILTER_ALL;
       const projects = getProjectList();
-
-      filter.innerHTML = `<option value="${FILTER_ALL}">전체 보기</option>`;
-
+      projectFilter.innerHTML = `<option value="${FILTER_ALL}">전체 보기</option>`;
       projects.forEach(project => {
-        const option = document.createElement("option");
+        const option = document.createElement('option');
         option.value = project;
         option.textContent = project;
-        filter.appendChild(option);
+        projectFilter.appendChild(option);
       });
-
-      const stillExists = currentValue === FILTER_ALL || projects.includes(currentValue);
-      filter.value = stillExists ? currentValue : FILTER_ALL;
+      projectFilter.value = projects.includes(currentValue) || currentValue === FILTER_ALL ? currentValue : FILTER_ALL;
       updateCurrentFilterText();
     }
 
     function getSelectedProjectFilter() {
-      return document.getElementById("projectFilter").value;
+      return projectFilter.value;
     }
 
     function getKeywordFilter() {
-      return document.getElementById("keywordFilter").value.trim().toLowerCase();
-    }
-
-    function handleFilterChange() {
-      updateCurrentFilterText();
-      renderAll();
+      return keywordFilter.value.trim().toLowerCase();
     }
 
     function updateCurrentFilterText() {
       const selected = getSelectedProjectFilter();
       const keyword = getKeywordFilter();
-      let text = selected === FILTER_ALL ? "현재 필터: 전체 보기" : `현재 필터: ${selected}`;
+      let text = selected === FILTER_ALL ? '현재 필터: 전체 보기' : `현재 필터: ${selected}`;
       if (keyword) text += ` / 검색어: ${keyword}`;
-      document.getElementById("currentFilterText").textContent = text;
+      document.getElementById('currentFilterText').textContent = text;
     }
 
     function itemMatchesFilters(item) {
       const selectedProject = getSelectedProjectFilter();
       const keyword = getKeywordFilter();
-
       const projectPass = selectedProject === FILTER_ALL || item.project === selectedProject;
       const keywordTarget = `${item.title} ${item.manager} ${item.note} ${item.project}`.toLowerCase();
       const keywordPass = !keyword || keywordTarget.includes(keyword);
-
       return projectPass && keywordPass;
     }
 
+    function renderStats() {
+      const filtered = scheduleData.filter(itemMatchesFilters);
+      const doneCount = filtered.filter(item => item.done).length;
+      document.getElementById('statTotal').textContent = filtered.length;
+      document.getElementById('statDone').textContent = doneCount;
+      document.getElementById('statPending').textContent = filtered.length - doneCount;
+    }
+
+    function renderQuickList() {
+      const quickList = document.getElementById('quickList');
+      const items = sortByDate(scheduleData.filter(itemMatchesFilters)).slice(0, 6);
+      if (items.length === 0) {
+        quickList.innerHTML = '<div class="empty">조건에 맞는 일정이 없습니다.</div>';
+        return;
+      }
+      quickList.innerHTML = items.map(item => `
+        <div class="quick-item">
+          <div class="q-date">${item.month}월 · ${item.date}</div>
+          <div class="q-title">${escapeHtml(item.title)}</div>
+          <div class="q-meta">${escapeHtml(item.project)} / 담당: ${escapeHtml(item.manager || '-')} ${item.done ? '/ 완료' : ''}</div>
+        </div>
+      `).join('');
+    }
+
     function getFilteredItemsByMonth(month) {
-      const items = scheduleData.filter(item => item.month === month && itemMatchesFilters(item));
-      return sortByDate(items);
+      return sortByDate(scheduleData.filter(item => Number(item.month) === month && itemMatchesFilters(item)));
+    }
+
+    function createActionButtons(item) {
+      if (!canManage()) return '';
+      return `
+        <div class="btn-group">
+          <button class="done-btn ${item.done ? 'cancel-done' : ''}" onclick="window.appApi.toggleDone('${item.id}')">${item.done ? '완료취소' : '완료'}</button>
+          <button class="edit-btn" onclick="window.appApi.editSchedule('${item.id}')">수정</button>
+          <button class="delete-btn" onclick="window.appApi.deleteSchedule('${item.id}')">삭제</button>
+        </div>
+      `;
     }
 
     function createMonthCard(month, items) {
-      const card = document.createElement("div");
-      card.className = "month-card";
+      const card = document.createElement('div');
+      card.className = 'month-card';
 
-      const header = document.createElement("div");
-      header.className = "month-header";
+      const header = document.createElement('div');
+      header.className = 'month-header';
       header.innerHTML = `
         <div>
           <div class="month-title">${month}월</div>
           <div class="month-summary">총 ${items.length}건</div>
         </div>
-        <button class="month-add-btn" onclick="focusAddForm(${month})">+ 일정추가</button>
+        ${canManage() ? `<button class="month-add-btn" onclick="window.appApi.focusAddForm(${month})">+ 일정추가</button>` : ''}
       `;
       card.appendChild(header);
 
       if (items.length === 0) {
-        const empty = document.createElement("div");
-        empty.className = "empty";
-        empty.textContent = "등록된 일정이 없습니다.";
+        const empty = document.createElement('div');
+        empty.className = 'empty';
+        empty.textContent = '등록된 일정이 없습니다.';
         card.appendChild(empty);
         return card;
       }
 
       items.forEach(item => {
-        const box = document.createElement("div");
-        box.className = `item ${item.type} ${item.done ? "done" : ""}`;
-
+        const box = document.createElement('div');
+        box.className = `item ${item.type} ${item.done ? 'done' : ''}`;
         box.innerHTML = `
-          <div class="btn-group">
-            <button class="done-btn ${item.done ? "cancel-done" : ""}" onclick="toggleDone(${item.id})">${item.done ? "완료취소" : "완료"}</button>
-            <button class="edit-btn" onclick="editSchedule(${item.id})">수정</button>
-            <button class="delete-btn" onclick="deleteSchedule(${item.id})">삭제</button>
-          </div>
-          <div class="date">${item.date}</div>
-          <div class="title">${item.title}</div>
-          <div class="meta">담당: ${item.manager}</div>
-          <div class="meta">비고: ${item.note}</div>
+          ${createActionButtons(item)}
+          <div class="date">${escapeHtml(item.date)}</div>
+          <div class="title">${escapeHtml(item.title)}</div>
+          <div class="meta">담당: ${escapeHtml(item.manager || '-')}</div>
+          <div class="meta">비고: ${escapeHtml(item.note || '-')}</div>
           <div class="badge-row">
-            <div class="category-badge">${item.project}</div>
+            <div class="category-badge">${escapeHtml(item.project)}</div>
             ${item.done ? '<div class="status-text">완료된 일정</div>' : ''}
           </div>
         `;
-
         card.appendChild(box);
       });
 
       return card;
     }
 
-    function sortByDate(items) {
-      return [...items].sort((a, b) => {
-        const aParts = a.date.split(".").map(v => parseInt(v, 10) || 0);
-        const bParts = b.date.split(".").map(v => parseInt(v, 10) || 0);
-
-        const aMonth = aParts[0] || 0;
-        const aDay = aParts[1] || 0;
-        const bMonth = bParts[0] || 0;
-        const bDay = bParts[1] || 0;
-
-        if (aMonth !== bMonth) return aMonth - bMonth;
-        if (aDay !== bDay) return aDay - bDay;
-        if (a.done !== b.done) return a.done - b.done;
-        return a.title.localeCompare(b.title, "ko");
-      });
-    }
-
-    function renderQuickList() {
-      const quickList = document.getElementById("quickList");
-      const items = sortByDate(scheduleData.filter(itemMatchesFilters)).slice(0, 6);
-
-      if (items.length === 0) {
-        quickList.innerHTML = '<div class="empty">조건에 맞는 일정이 없습니다.</div>';
-        return;
-      }
-
-      quickList.innerHTML = items.map(item => `
-        <div class="quick-item">
-          <div class="q-date">${item.month}월 · ${item.date}</div>
-          <div class="q-title">${item.title}</div>
-          <div class="q-meta">${item.project} / 담당: ${item.manager}${item.done ? ' / 완료' : ''}</div>
-        </div>
-      `).join("");
-    }
-
-    function renderStats() {
-      const filtered = scheduleData.filter(itemMatchesFilters);
-      const doneCount = filtered.filter(item => item.done).length;
-      document.getElementById("statTotal").textContent = filtered.length;
-      document.getElementById("statDone").textContent = doneCount;
-      document.getElementById("statPending").textContent = filtered.length - doneCount;
-    }
-
     function renderSchedule() {
-      const scheduleGrid = document.getElementById("scheduleGrid");
-      scheduleGrid.innerHTML = "";
-
+      const scheduleGrid = document.getElementById('scheduleGrid');
+      scheduleGrid.innerHTML = '';
       for (let month = 1; month <= 12; month++) {
-        const items = getFilteredItemsByMonth(month);
-        const monthCard = createMonthCard(month, items);
-        scheduleGrid.appendChild(monthCard);
+        scheduleGrid.appendChild(createMonthCard(month, getFilteredItemsByMonth(month)));
       }
     }
 
     function renderAll() {
+      refreshProjectFilterOptions();
       renderStats();
       renderSchedule();
       renderQuickList();
+      updateFormPermissionState();
     }
 
+    function updateFormPermissionState() {
+      const disabled = !canManage();
+      ['project', 'month', 'date', 'title', 'type', 'manager', 'note', 'saveBtn', 'resetSampleBtn'].forEach(id => {
+        document.getElementById(id).disabled = disabled;
+      });
+      cancelEditBtn.disabled = disabled;
+      if (disabled) {
+        showMessage(scheduleMessage, '현재 계정은 조회 전용입니다. 일정 등록·수정·삭제는 관리자만 가능합니다.', 'notice');
+      } else {
+        scheduleMessage.innerHTML = '';
+      }
+    }
+
+    async function saveSchedule() {
+      if (!canManage()) {
+        showMessage(scheduleMessage, '관리자만 일정을 저장할 수 있습니다.', 'error');
+        return;
+      }
+
+      const form = getFormValues();
+      if (!form.project || !form.month || !form.date || !form.title) {
+        showMessage(scheduleMessage, '사업명, 월, 날짜, 일정명은 꼭 입력하세요.', 'error');
+        return;
+      }
+
+      const payload = {
+        project: form.project,
+        month: Number(form.month),
+        date: form.date,
+        title: form.title,
+        type: form.type,
+        manager: form.manager || '-',
+        note: form.note || '-',
+        done: false,
+        updatedAt: serverTimestamp(),
+        updatedBy: currentUser.uid
+      };
+
+      try {
+        if (editingId) {
+          const original = scheduleData.find(item => item.id === editingId);
+          payload.done = original?.done || false;
+          await updateDoc(doc(db, 'annualSchedules', editingId), payload);
+        } else {
+          payload.createdAt = serverTimestamp();
+          payload.createdBy = currentUser.uid;
+          await addDoc(collection(db, 'annualSchedules'), payload);
+        }
+        clearForm();
+        setAddMode();
+        scheduleMessage.innerHTML = '';
+      } catch (err) {
+        showMessage(scheduleMessage, `일정 저장 중 오류가 발생했습니다.<br>${err.message}`, 'error');
+      }
+    }
+
+    scheduleForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      await saveSchedule();
+    });
+
+    async function editSchedule(id) {
+      if (!canManage()) return;
+      const item = scheduleData.find(x => x.id === id);
+      if (!item) return;
+      editingId = id;
+      document.getElementById('project').value = item.project;
+      document.getElementById('month').value = item.month;
+      document.getElementById('date').value = item.date;
+      document.getElementById('title').value = item.title;
+      document.getElementById('type').value = item.type;
+      document.getElementById('manager').value = item.manager === '-' ? '' : item.manager;
+      document.getElementById('note').value = item.note === '-' ? '' : item.note;
+      document.getElementById('saveBtn').textContent = '수정 저장';
+      cancelEditBtn.classList.remove('hidden');
+      document.getElementById('modeBadge').textContent = `일정 수정 중 (${id})`;
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    async function deleteSchedule(id) {
+      if (!canManage()) return;
+      if (!confirm('이 일정을 삭제할까요?')) return;
+      try {
+        await deleteDoc(doc(db, 'annualSchedules', id));
+        if (editingId === id) {
+          clearForm();
+          setAddMode();
+        }
+      } catch (err) {
+        showMessage(scheduleMessage, `삭제 중 오류가 발생했습니다.<br>${err.message}`, 'error');
+      }
+    }
+
+    async function toggleDone(id) {
+      if (!canManage()) return;
+      const item = scheduleData.find(x => x.id === id);
+      if (!item) return;
+      try {
+        await updateDoc(doc(db, 'annualSchedules', id), {
+          done: !item.done,
+          updatedAt: serverTimestamp(),
+          updatedBy: currentUser.uid
+        });
+      } catch (err) {
+        showMessage(scheduleMessage, `완료 처리 중 오류가 발생했습니다.<br>${err.message}`, 'error');
+      }
+    }
+
+    function focusAddForm(month) {
+      if (!canManage()) return;
+      clearForm();
+      setAddMode();
+      document.getElementById('month').value = month;
+      document.getElementById('title').focus();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    async function seedDefaultData() {
+      if (!canManage()) return;
+      if (!confirm('샘플 일정을 다시 넣을까요? 기존 일정은 유지되고, 없던 샘플만 추가하는 방식이 더 안전합니다. 계속할까요?')) return;
+      try {
+        const snapshot = await getDocs(collection(db, 'annualSchedules'));
+        const existingKeys = new Set(snapshot.docs.map(docSnap => {
+          const d = docSnap.data();
+          return `${d.project}|${d.month}|${d.date}|${d.title}`;
+        }));
+
+        const batch = writeBatch(db);
+        let addCount = 0;
+        defaultData.forEach(item => {
+          const key = `${item.project}|${item.month}|${item.date}|${item.title}`;
+          if (!existingKeys.has(key)) {
+            const ref = doc(collection(db, 'annualSchedules'));
+            batch.set(ref, {
+              ...item,
+              createdAt: serverTimestamp(),
+              updatedAt: serverTimestamp(),
+              createdBy: currentUser.uid,
+              updatedBy: currentUser.uid
+            });
+            addCount += 1;
+          }
+        });
+
+        if (addCount === 0) {
+          showMessage(scheduleMessage, '추가할 샘플 일정이 없습니다. 이미 모두 들어가 있습니다.', 'notice');
+          return;
+        }
+
+        await batch.commit();
+        showMessage(scheduleMessage, `${addCount}건의 샘플 일정을 추가했습니다.`, 'notice');
+      } catch (err) {
+        showMessage(scheduleMessage, `샘플 일정 입력 중 오류가 발생했습니다.<br>${err.message}`, 'error');
+      }
+    }
+
+    resetSampleBtn.addEventListener('click', seedDefaultData);
+    keywordFilter.addEventListener('input', () => {
+      updateCurrentFilterText();
+      renderAll();
+    });
+    projectFilter.addEventListener('change', () => {
+      updateCurrentFilterText();
+      renderAll();
+    });
+    logoutBtn.addEventListener('click', async () => {
+      await signOut(auth);
+    });
+
+    function escapeHtml(str) {
+      return String(str ?? '')
+        .replaceAll('&', '&amp;')
+        .replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;')
+        .replaceAll('"', '&quot;')
+        .replaceAll("'", '&#039;');
+    }
+
+    function bindScheduleRealtime() {
+      if (unsubSchedules) unsubSchedules();
+      unsubSchedules = onSnapshot(query(collection(db, 'annualSchedules'), orderBy('month', 'asc')), (snapshot) => {
+        scheduleData = snapshot.docs.map(docSnap => ({
+          id: docSnap.id,
+          ...docSnap.data(),
+          manager: docSnap.data().manager || '-',
+          note: docSnap.data().note || '-',
+          done: Boolean(docSnap.data().done)
+        }));
+        renderAll();
+      }, (err) => {
+        showMessage(scheduleMessage, `일정 불러오기 중 오류가 발생했습니다.<br>${err.message}`, 'error');
+      });
+    }
+
+    onAuthStateChanged(auth, async (user) => {
+      currentUser = user;
+      if (!user) {
+        authPage.classList.remove('hidden');
+        appPage.classList.add('hidden');
+        currentProfile = null;
+        if (unsubSchedules) unsubSchedules();
+        return;
+      }
+
+      currentProfile = await loadUserProfile(user.uid);
+      authPage.classList.add('hidden');
+      appPage.classList.remove('hidden');
+      updateTopUserInfo();
+      bindScheduleRealtime();
+    });
+
     initMonthOptions();
-    loadData();
+    setAuthMode('login');
     setAddMode();
-    refreshProjectFilterOptions();
-    renderAll();
+    updateCurrentFilterText();
+
+    window.appApi = {
+      editSchedule,
+      deleteSchedule,
+      toggleDone,
+      focusAddForm
+    };
   </script>
 </body>
 </html>
