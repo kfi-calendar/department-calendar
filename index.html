@@ -13,10 +13,10 @@
       --muted: #6b7280;
       --primary: #2563eb;
       --primary-soft: #eaf2ff;
-      --event: #4dabf7;
-      --deadline: #ff6b6b;
+      --business: #4dabf7;
+      --attendance: #ff6b6b;
       --meeting: #51cf66;
-      --notice: #9775fa;
+      --event: #9775fa;
       --done: #868e96;
       --shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
     }
@@ -308,10 +308,10 @@
       display: inline-block;
     }
 
-    .event { background: var(--event); }
-    .deadline { background: var(--deadline); }
+    .business { background: var(--business); }
+    .attendance { background: var(--attendance); }
     .meeting { background: var(--meeting); }
-    .notice { background: var(--notice); }
+    .event { background: var(--event); }
     .done-dot { background: var(--done); }
 
     .dashboard {
@@ -499,10 +499,10 @@
       box-shadow: 0 8px 20px rgba(15, 23, 42, 0.06);
     }
 
-    .item.event { border-left-color: var(--event); }
-    .item.deadline { border-left-color: var(--deadline); }
+    .item.business { border-left-color: var(--business); }
+    .item.attendance { border-left-color: var(--attendance); }
     .item.meeting { border-left-color: var(--meeting); }
-    .item.notice { border-left-color: var(--notice); }
+    .item.event { border-left-color: var(--event); }
 
     .item.done {
       border-left-color: var(--done) !important;
@@ -633,7 +633,7 @@
       <div class="auth-hero">
         <div>
           <h1>부서 연간일정표<br>로그인 포털</h1>
-          <p>부서별 연간 계획, 마감 일정, 회의, 공지사항을 한 곳에서 관리하는 업무용 일정표입니다. 로그인 후 일정 조회, 권한이 있는 경우 일정 등록·수정·삭제가 가능합니다.</p>
+          <p>부서별 연간 계획, 사업 일정, 회의, 행사, 근태를 한 곳에서 관리하는 업무용 일정표입니다. 로그인 후 일정 조회, 권한이 있는 경우 일정 등록·수정·삭제가 가능합니다.</p>
 
           <div class="auth-points">
             <div class="auth-point">
@@ -693,12 +693,12 @@
       <section class="hero">
         <div>
           <h1>2026년 부서 연간일정표</h1>
-          <div class="desc">월별 카드 형태로 한눈에 보고, 일정 추가 / 수정 / 삭제 / 완료 처리 / 사업별 필터까지 가능한 버전입니다. 데이터는 Firebase Firestore에 저장됩니다.</div>
+          <div class="desc">월별 카드 형태로 한눈에 보고, 일정 추가 / 수정 / 삭제 / 완료 처리 / 사업별 필터까지 가능한 버전입니다. 일정 구분은 사업 / 회의 / 행사 / 근태 / 완료로 운영됩니다.</div>
           <div class="legend">
-            <span><i class="dot event"></i> 행사</span>
-            <span><i class="dot deadline"></i> 마감</span>
+            <span><i class="dot business"></i> 사업</span>
             <span><i class="dot meeting"></i> 회의</span>
-            <span><i class="dot notice"></i> 공지</span>
+            <span><i class="dot event"></i> 행사</span>
+            <span><i class="dot attendance"></i> 근태</span>
             <span><i class="dot done-dot"></i> 완료</span>
           </div>
         </div>
@@ -740,10 +740,10 @@
 
             <div class="field-two">
               <select id="type">
-                <option value="event">행사</option>
-                <option value="deadline">마감</option>
+                <option value="business">사업</option>
                 <option value="meeting">회의</option>
-                <option value="notice">공지</option>
+                <option value="event">행사</option>
+                <option value="attendance">근태</option>
               </select>
               <input type="text" id="manager" placeholder="담당자 / 부서" />
             </div>
@@ -838,11 +838,11 @@
 
     const FILTER_ALL = '__ALL__';
     const defaultData = [
-      { project: '지원사업A', month: 1, date: '1.10', title: '사업계획 보고', type: 'meeting', manager: '기획팀', note: '연간 운영방안 확정', done: false },
-      { project: '지원사업A', month: 2, date: '2.28', title: '1차 접수 마감', type: 'deadline', manager: '산업지원부', note: '18:00 마감', done: false },
+      { project: '지원사업A', month: 1, date: '1.10', title: '사업계획 보고', type: 'business', manager: '기획팀', note: '연간 운영방안 확정', done: false },
+      { project: '지원사업A', month: 2, date: '2.28', title: '연차 사용', type: 'attendance', manager: '산업지원부', note: '오후 반차', done: false },
       { project: '지원사업B', month: 3, date: '3.08', title: '심사위원회 개최', type: 'meeting', manager: '운영팀', note: '평가자료 사전 배포', done: false },
-      { project: '지원사업B', month: 4, date: '4.12', title: '선정 결과 통보', type: 'notice', manager: '산업지원부', note: '공문 및 유선 안내', done: false },
-      { project: '행사사업', month: 5, date: '5.20', title: '중간 점검자료 제출', type: 'deadline', manager: '참여기관', note: '양식 준수', done: true }
+      { project: '지원사업B', month: 4, date: '4.12', title: '사업 설명회', type: 'event', manager: '산업지원부', note: '공문 및 유선 안내', done: false },
+      { project: '행사사업', month: 5, date: '5.20', title: '출장', type: 'attendance', manager: '참여기관', note: '현장 방문', done: true }
     ];
 
     const app = initializeApp(firebaseConfig);
@@ -984,16 +984,32 @@
       setAddMode();
     });
 
+    const DISPLAY_YEAR = 2026;
+
+    function normalizeType(type) {
+      const map = {
+        business: 'business',
+        meeting: 'meeting',
+        event: 'event',
+        attendance: 'attendance',
+        deadline: 'attendance',
+        notice: 'event'
+      };
+      return map[type] || 'business';
+    }
+
+    function parseEventDate(item) {
+      const rawParts = String(item.date || '').split('.').map(v => parseInt(v, 10) || 0);
+      const month = rawParts[0] || Number(item.month) || 1;
+      const day = rawParts[1] || 1;
+      return new Date(DISPLAY_YEAR, month - 1, day, 23, 59, 59, 999);
+    }
+
     function sortByDate(items) {
       return [...items].sort((a, b) => {
-        const aParts = String(a.date || '').split('.').map(v => parseInt(v, 10) || 0);
-        const bParts = String(b.date || '').split('.').map(v => parseInt(v, 10) || 0);
-        const aMonth = aParts[0] || Number(a.month) || 0;
-        const aDay = aParts[1] || 0;
-        const bMonth = bParts[0] || Number(b.month) || 0;
-        const bDay = bParts[1] || 0;
-        if (aMonth !== bMonth) return aMonth - bMonth;
-        if (aDay !== bDay) return aDay - bDay;
+        const aDate = parseEventDate(a);
+        const bDate = parseEventDate(b);
+        if (aDate.getTime() !== bDate.getTime()) return aDate - bDate;
         if (a.done !== b.done) return a.done - b.done;
         return String(a.title || '').localeCompare(String(b.title || ''), 'ko');
       });
@@ -1055,18 +1071,30 @@
 
     function renderQuickList() {
       const quickList = document.getElementById('quickList');
-      const items = sortByDate(scheduleData.filter(itemMatchesFilters)).slice(0, 6);
-      if (items.length === 0) {
-        quickList.innerHTML = '<div class="empty">조건에 맞는 일정이 없습니다.</div>';
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+
+      const upcomingItems = sortByDate(
+        scheduleData.filter(item => itemMatchesFilters(item) && !item.done && parseEventDate(item) >= today)
+      ).slice(0, 6);
+
+      if (upcomingItems.length === 0) {
+        quickList.innerHTML = '<div class="empty">오늘 기준으로 남아 있는 다가오는 일정이 없습니다.</div>';
         return;
       }
-      quickList.innerHTML = items.map(item => `
-        <div class="quick-item">
-          <div class="q-date">${item.month}월 · ${item.date}</div>
-          <div class="q-title">${escapeHtml(item.title)}</div>
-          <div class="q-meta">${escapeHtml(item.project)} / 담당: ${escapeHtml(item.manager || '-')} ${item.done ? '/ 완료' : ''}</div>
-        </div>
-      `).join('');
+
+      quickList.innerHTML = upcomingItems.map(item => {
+        const eventDate = parseEventDate(item);
+        const diffDays = Math.ceil((eventDate - today) / (1000 * 60 * 60 * 24));
+        const dueText = diffDays <= 0 ? '오늘' : `D-${diffDays}`;
+        return `
+          <div class="quick-item">
+            <div class="q-date">${DISPLAY_YEAR}년 ${item.month}월 · ${item.date} <strong style="margin-left:6px; color:#2563eb;">${dueText}</strong></div>
+            <div class="q-title">${escapeHtml(item.title)}</div>
+            <div class="q-meta">${escapeHtml(item.project)} / 담당: ${escapeHtml(item.manager || '-')}</div>
+          </div>
+        `;
+      }).join('');
     }
 
     function getFilteredItemsByMonth(month) {
@@ -1327,6 +1355,7 @@
         scheduleData = snapshot.docs.map(docSnap => ({
           id: docSnap.id,
           ...docSnap.data(),
+          type: normalizeType(docSnap.data().type),
           manager: docSnap.data().manager || '-',
           note: docSnap.data().note || '-',
           done: Boolean(docSnap.data().done)
